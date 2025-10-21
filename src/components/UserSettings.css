@@ -1,0 +1,123 @@
+.settings-container {
+  min-height: calc(100vh - 73px);
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 50%, #2d3250 100%);
+  padding: 60px 40px;
+}
+
+.settings-header {
+  text-align: center;
+  margin-bottom: 60px;
+}
+
+.settings-header h1 {
+  font-size: 48px;
+  font-weight: 700;
+  color: #ffffff;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #ffffff 0%, #a78bfa 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.settings-header p {
+  font-size: 18px;
+  color: #9ca3af;
+}
+
+.settings-content {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.settings-card {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 16px;
+  padding: 40px;
+}
+
+.settings-card h2 {
+  font-size: 28px;
+  color: #ffffff;
+  margin-bottom: 30px;
+  font-weight: 600;
+}
+
+.settings-card h3 {
+  font-size: 22px;
+  color: #ffffff;
+  margin-bottom: 20px;
+  font-weight: 600;
+}
+
+.form-group-settings {
+  margin-bottom: 24px;
+}
+
+.form-group-settings label {
+  display: block;
+  margin-bottom: 10px;
+  color: #c5c9d9;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.form-group-settings input {
+  width: 100%;
+  padding: 14px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 8px;
+  font-size: 15px;
+  color: #ffffff;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+}
+
+.form-group-settings input::placeholder {
+  color: #5a5f7d;
+}
+
+.form-group-settings input:focus {
+  outline: none;
+  background: rgba(255, 255, 255, 0.08);
+  border-color: #6366f1;
+  box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+}
+
+.divider-settings {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+  margin: 40px 0;
+}
+
+.save-button {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.save-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(99, 102, 241, 0.4);
+}
+
+@media (max-width: 768px) {
+  .settings-container {
+    padding: 40px 20px;
+  }
+
+  .settings-card {
+    padding: 30px 20px;
+  }
+}
