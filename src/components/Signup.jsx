@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import HyperspeedBackground from './HyperspeedBackground';
-import './Auth.css';
+import { useState } from "react";
+import { backend_url } from "../utils/config";
+import "./Auth.css";
+import HyperspeedBackground from "./HyperspeedBackground";
 
 function Signup({ onSwitchToLogin, onSignupSuccess }) {
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    password: '',
-    confirmPassword: ''
+    name: "",
+    email: "",
+    password: "",
+    confirmPassword: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -18,45 +19,45 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    setError('');
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     // Validate passwords match
     if (formData.password !== formData.confirmPassword) {
-      setError('Passwords do not match');
+      setError("Passwords do not match");
       setLoading(false);
       return;
     }
 
     try {
-      const response = await fetch('http://localhost:4000/auth/signup', {
-        method: 'POST',
+      const response = await fetch(`${backend_url}/auth/signup`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           name: formData.name,
           email: formData.email,
-          password: formData.password
-        })
+          password: formData.password,
+        }),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Signup failed');
+        throw new Error(data.error || "Signup failed");
       }
 
       // Store token in localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       // Call success callback
       if (onSignupSuccess) {
@@ -76,7 +77,7 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
         <div className="auth-card">
           <h2>Welcome To Layr</h2>
           <p className="auth-subtitle">Create your account</p>
-          
+
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="name">Full Name</label>
@@ -122,7 +123,7 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? '👁️' : '👁️‍🗨️'}
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
                 </button>
               </div>
             </div>
@@ -145,7 +146,7 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
                   className="toggle-password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? '👁️' : '👁️‍🗨️'}
+                  {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
                 </button>
               </div>
             </div>
@@ -164,12 +165,12 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
             {error && <div className="error-message">⚠️ {error}</div>}
 
             <button type="submit" className="auth-button" disabled={loading}>
-              {loading ? 'Creating account...' : 'Create an account'}
+              {loading ? "Creating account..." : "Create an account"}
             </button>
           </form>
 
           <p className="switch-auth">
-            Already have an account?{' '}
+            Already have an account?{" "}
             <span onClick={onSwitchToLogin} className="switch-link">
               Sign In
             </span>
@@ -180,7 +181,10 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
       <div className="auth-right">
         <div className="hero-content">
           <h1>Designed for individuals</h1>
-          <p>See the analytics and grow your date for Task remotely, from anywhere!</p>
+          <p>
+            See the analytics and grow your date for Task remotely, from
+            anywhere!
+          </p>
         </div>
       </div>
     </div>

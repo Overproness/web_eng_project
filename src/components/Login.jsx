@@ -1,13 +1,14 @@
-import { useState } from 'react';
-import HyperspeedBackground from './HyperspeedBackground';
-import './Auth.css';
+import { useState } from "react";
+import { backend_url } from "../utils/config";
+import "./Auth.css";
+import HyperspeedBackground from "./HyperspeedBackground";
 
 function Login({ onSwitchToSignup, onLoginSuccess }) {
   const [formData, setFormData] = useState({
-    email: '',
-    password: ''
+    email: "",
+    password: "",
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(false);
@@ -15,34 +16,34 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
   const handleChange = (e) => {
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [e.target.name]: e.target.value,
     });
-    setError('');
+    setError("");
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError('');
+    setError("");
 
     try {
-      const response = await fetch('http://localhost:4000/auth/login', {
-        method: 'POST',
+      const response = await fetch(`${backend_url}/auth/login`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData)
+        body: JSON.stringify(formData),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Login failed');
+        throw new Error(data.error || "Login failed");
       }
 
       // Store token in localStorage
-      localStorage.setItem('token', data.token);
-      localStorage.setItem('user', JSON.stringify(data.user));
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
 
       // Call success callback
       if (onLoginSuccess) {
@@ -62,7 +63,7 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
         <div className="auth-card">
           <h2>Welcome To Layr</h2>
           <p className="auth-subtitle">Sign in to your account</p>
-          
+
           <form onSubmit={handleSubmit}>
             <div className="form-group">
               <label htmlFor="email">E-mail</label>
@@ -95,7 +96,7 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? '👁️' : '👁️‍🗨️'}
+                  {showPassword ? "👁️" : "👁️‍🗨️"}
                 </button>
               </div>
             </div>
@@ -109,18 +110,20 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
                 />
                 Remember for 30 days
               </label>
-              <a href="#" className="forgot-password">Forgot password</a>
+              <a href="#" className="forgot-password">
+                Forgot password
+              </a>
             </div>
 
             {error && <div className="error-message">⚠️ {error}</div>}
 
             <button type="submit" className="auth-button" disabled={loading}>
-              {loading ? 'Signing in...' : 'Login'}
+              {loading ? "Signing in..." : "Login"}
             </button>
           </form>
 
           <p className="switch-auth">
-            Don't have an account?{' '}
+            Don't have an account?{" "}
             <span onClick={onSwitchToSignup} className="switch-link">
               Sign Up
             </span>
@@ -131,7 +134,10 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
       <div className="auth-right">
         <div className="hero-content">
           <h1>Designed for individuals</h1>
-          <p>See the analytics and grow your date for Task remotely, from anywhere!</p>
+          <p>
+            See the analytics and grow your date for Task remotely, from
+            anywhere!
+          </p>
         </div>
       </div>
     </div>
