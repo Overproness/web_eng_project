@@ -1,12 +1,13 @@
+/* Navbar.css */
 .navbar {
-  background: rgba(10, 14, 39, 0.95);
+  /* Dark green background to match theme */
+  background: rgba(5, 11, 8, 0.95); 
   backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  border-bottom: 1px solid rgba(34, 197, 94, 0.1);
   padding: 0;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
 }
 
 .navbar-container {
@@ -22,11 +23,9 @@
   color: #ffffff;
   font-size: 24px;
   font-weight: 700;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
   margin: 0;
+  /* Removed purple gradient, keeping it clean white or subtle green */
+  color: #ffffff;
 }
 
 .navbar-menu {
@@ -43,7 +42,7 @@
   font-weight: 500;
   padding: 10px 20px;
   cursor: pointer;
-  border-radius: 8px;
+  border-radius: 6px;
   transition: all 0.3s ease;
   position: relative;
 }
@@ -55,18 +54,22 @@
 
 .nav-item.active {
   color: #ffffff;
-  background: rgba(99, 102, 241, 0.2);
+  /* Green active background */
+  background: rgba(34, 197, 94, 0.15); 
 }
 
+/* Optional: Green underline for active state */
 .nav-item.active::after {
-  content: '';
+  /* Removed the underline to match the cleaner button look in your reference image, 
+     but if you want it back, uncomment below and change color to #22c55e */
+  /* content: '';
   position: absolute;
-  bottom: -16px;
+  bottom: -4px;
   left: 50%;
   transform: translateX(-50%);
   width: 40%;
   height: 2px;
-  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  background: #22c55e; */
 }
 
 .navbar-user {
@@ -82,9 +85,10 @@
 }
 
 .logout-btn {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.3);
-  color: #fca5a5;
+  /* Changing to green border/text to fit theme, or keep red if strictly for logout warning */
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
   font-size: 14px;
   font-weight: 600;
   padding: 8px 20px;
@@ -94,9 +98,9 @@
 }
 
 .logout-btn:hover {
-  background: rgba(239, 68, 68, 0.2);
-  border-color: rgba(239, 68, 68, 0.5);
-  transform: translateY(-1px);
+  background: rgba(34, 197, 94, 0.1); /* Green hover */
+  border-color: #22c55e;
+  color: #22c55e;
 }
 
 @media (max-width: 768px) {
@@ -104,19 +108,5 @@
     flex-direction: column;
     gap: 16px;
     padding: 16px 20px;
-  }
-
-  .navbar-menu {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .navbar-user {
-    width: 100%;
-    justify-content: center;
-  }
-
-  .nav-item.active::after {
-    display: none;
   }
 }

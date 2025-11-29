@@ -1,4 +1,4 @@
-import { useState } from 'react';
+// Navbar.jsx
 import './Navbar.css';
 
 function Navbar({ activeTab, onTabChange, onLogout, user }) {
@@ -6,7 +6,7 @@ function Navbar({ activeTab, onTabChange, onLogout, user }) {
     <nav className="navbar">
       <div className="navbar-container">
         <div className="navbar-brand">
-          <h2>Layr</h2>
+          <h2>DL Model Builder</h2>
         </div>
         
         <div className="navbar-menu">
@@ -16,12 +16,22 @@ function Navbar({ activeTab, onTabChange, onLogout, user }) {
           >
             Home
           </button>
+          
           <button 
             className={`nav-item ${activeTab === 'build' ? 'active' : ''}`}
             onClick={() => onTabChange('build')}
           >
             Build Models
           </button>
+
+          {/* New About Button Added Here */}
+          <button 
+            className={`nav-item ${activeTab === 'about' ? 'active' : ''}`}
+            onClick={() => onTabChange('about')}
+          >
+            About
+          </button>
+
           <button 
             className={`nav-item ${activeTab === 'settings' ? 'active' : ''}`}
             onClick={() => onTabChange('settings')}
@@ -31,7 +41,8 @@ function Navbar({ activeTab, onTabChange, onLogout, user }) {
         </div>
 
         <div className="navbar-user">
-          <span className="user-name">{user.name}</span>
+          {/* Added safety check for user name */}
+          <span className="user-name">{user?.name || 'User'}</span>
           <button className="logout-btn" onClick={onLogout}>
             Logout
           </button>

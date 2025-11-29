@@ -1,14 +1,26 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import './UserSettings.css';
 
 function UserSettings({ user }) {
+  // Initialize state, using empty strings if user data isn't ready yet
   const [formData, setFormData] = useState({
-    name: user.name,
-    email: user.email,
+    name: user?.name || '',
+    email: user?.email || '',
     currentPassword: '',
     newPassword: '',
     confirmPassword: ''
   });
+
+  // Update form if user prop changes (e.g. data finishes loading)
+  useEffect(() => {
+    if (user) {
+      setFormData(prev => ({
+        ...prev,
+        name: user.name || '',
+        email: user.email || ''
+      }));
+    }
+  }, [user]);
 
   const handleChange = (e) => {
     setFormData({
@@ -19,8 +31,8 @@ function UserSettings({ user }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Add update logic here
     console.log('Update settings:', formData);
+    // Add your update logic here
   };
 
   return (
