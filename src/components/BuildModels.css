@@ -3,7 +3,7 @@
 /* Global Page Styling (Dark Forest Theme) */
 .model-builder-page {
   padding: 40px;
-  background-color: #050b08; /* Deep Forest Black */
+  background-color: #050a08; /* Darker green background */
   color: #ffffff;
   min-height: calc(100vh - 60px); 
   display: flex;
@@ -322,39 +322,29 @@
   padding-top: 20px;
 }
 
-.export-btn, .save-model-btn {
+.export-btn {
   padding: 12px 24px;
   border-radius: 6px;
-  font-weight: 600;
+  font-weight: 700;
   cursor: pointer;
   transition: all 0.2s;
   font-size: 0.95rem;
-}
-
-.export-btn {
-  background-color: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  color: #ffffff;
+  background-color: #10b981;
+  border: 1px solid #10b981;
+  color: #000000;
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
 }
 
 .export-btn:hover:not(:disabled) {
-  border-color: #ffffff;
-  background-color: rgba(255, 255, 255, 0.05);
+  background-color: #059669;
+  border-color: #059669;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
 }
 
 .export-btn:disabled {
   opacity: 0.5;
   cursor: not-allowed;
-}
-
-.save-model-btn {
-  background-color: #22c55e; 
-  border: none;
-  color: #050b08; /* Dark text on green button */
-}
-
-.save-model-btn:hover {
-  background-color: #16a34a;
 }
 
 /* --- Configuration Panel --- */
@@ -632,9 +622,4 @@
     opacity: 1;
     transform: translateY(0);
   }
-}
-
-.save-model-btn:hover {
-  background-color: #16a34a;
-  transform: translateY(-1px);
 }

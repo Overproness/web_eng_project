@@ -1,23 +1,9 @@
 import React from 'react';
 import './Home.css';
 
-// 1. Icon Component (Checkmark)
-const CheckIcon = () => (
-  <svg 
-    xmlns="http://www.w3.org/2000/svg" 
-    width="20" height="20" viewBox="0 0 24 24" 
-    fill="none" stroke="currentColor" strokeWidth="2" 
-    strokeLinecap="round" strokeLinejoin="round" 
-    className="check-icon"
-  >
-    <polyline points="20 6 9 17 4 12"></polyline>
-  </svg>
-);
-
-// 2. Feature Card Component
-const FeatureCard = ({ text }) => (
-  <div className="feature-card">
-    <CheckIcon />
+// Feature Card Component (without icon)
+const FeatureCard = ({ text, index }) => (
+  <div className="feature-card" style={{ animationDelay: `${index * 0.15}s` }}>
     <span className="feature-text">{text}</span>
   </div>
 );
@@ -29,9 +15,7 @@ function Home({ onTabChange }) {
     "No-code model building",
     "Automated training",
     "One-click deployment",
-    "Real-time monitoring",
-    "Scalable infrastructure",
-    "Community support"
+    "Real-time monitoring"
   ];
 
   const useCases = [
@@ -69,7 +53,7 @@ function Home({ onTabChange }) {
         <h2 className="section-label">Powerful Features</h2>
         <div className="features-grid">
           {features.map((feature, index) => (
-            <FeatureCard key={index} text={feature} />
+            <FeatureCard key={index} text={feature} index={index} />
           ))}
         </div>
       </div>

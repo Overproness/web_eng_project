@@ -60,9 +60,9 @@ function App() {
         />
         <main className="main-content">
           {/* Renders the component based on the activeTab state */}
-          {activeTab === 'home' && <Home />}
+          {activeTab === 'home' && <Home onTabChange={handleTabChange} />}
           {activeTab === 'build' && <BuildModels />}
-          {activeTab === 'about' && <About />} {/* 2. Added the About page rendering */}
+          {activeTab === 'about' && <About onTabChange={handleTabChange} />} {/* 2. Added the About page rendering */}
           {activeTab === 'settings' && <UserSettings user={user} />}
         </main>
       </div>

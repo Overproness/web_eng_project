@@ -1,11 +1,14 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { backend_url } from "../utils/config";
 import "./BuildModels.css";
 
 function BuildModels() {
   const [searchTerm, setSearchTerm] = useState("");
   // State to store the layers dropped onto the canvas
-  const [droppedLayers, setDroppedLayers] = useState([]);
+  const [droppedLayers, setDroppedLayers] = useState(() => {
+    const saved = localStorage.getItem('droppedLayers');
+    return saved ? JSON.parse(saved) : [];
+  });
   // State for visual feedback when dragging over the canvas
   const [isDraggingOver, setIsDraggingOver] = useState(false);
   // State for selected layer to configure
@@ -14,28 +17,54 @@ function BuildModels() {
   const [generatedCode, setGeneratedCode] = useState(null);
   const [isGenerating, setIsGenerating] = useState(false);
   // State for input configuration
-  const [inputConfig, setInputConfig] = useState({
-    inputShape: "",
-    dataPreprocessing: "normalize",
-    augmentation: false,
+  const [inputConfig, setInputConfig] = useState(() => {
+    const saved = localStorage.getItem('inputConfig');
+    return saved ? JSON.parse(saved) : {
+      inputShape: "",
+      dataPreprocessing: "normalize",
+      augmentation: false,
+    };
   });
   // State for training configuration
-  const [trainingConfig, setTrainingConfig] = useState({
-    trainTestSplit: 0.8,
-    validationSplit: 0.2,
-    epochs: 10,
-    batchSize: 32,
-    optimizer: "adam",
-    learningRate: 0.001,
-    lossFunction: "categorical_crossentropy",
+  const [trainingConfig, setTrainingConfig] = useState(() => {
+    const saved = localStorage.getItem('trainingConfig');
+    return saved ? JSON.parse(saved) : {
+      trainTestSplit: 0.8,
+      validationSplit: 0.2,
+      epochs: 10,
+      batchSize: 32,
+      optimizer: "adam",
+      learningRate: 0.001,
+      lossFunction: "categorical_crossentropy",
+    };
   });
   // State for output/evaluation configuration
-  const [outputConfig, setOutputConfig] = useState({
-    metrics: ["accuracy"],
-    evaluateOnTestSet: true,
-    saveModel: true,
-    modelName: "my_model",
+  const [outputConfig, setOutputConfig] = useState(() => {
+    const saved = localStorage.getItem('outputConfig');
+    return saved ? JSON.parse(saved) : {
+      metrics: ["accuracy"],
+      evaluateOnTestSet: true,
+      saveModel: true,
+      modelName: "my_model",
+    };
   });
+
+  // Save state to localStorage whenever it changes
+  useEffect(() => {
+    localStorage.setItem('droppedLayers', JSON.stringify(droppedLayers));
+  }, [droppedLayers]);
+
+  useEffect(() => {
+    localStorage.setItem('inputConfig', JSON.stringify(inputConfig));
+  }, [inputConfig]);
+
+  useEffect(() => {
+    localStorage.setItem('trainingConfig', JSON.stringify(trainingConfig));
+  }, [trainingConfig]);
+
+  useEffect(() => {
+    localStorage.setItem('outputConfig', JSON.stringify(outputConfig));
+  }, [outputConfig]);
 
   const layerCategories = {
     Convolutional: [
@@ -103,7 +132,8 @@ function BuildModels() {
         type: layerType,
         params: getDefaultParams(layerType),
       };
-      setDroppedLayers([...droppedLayers, newLayer]);
+      const updatedLayers = [...droppedLayers, newLayer];
+      setDroppedLayers(updatedLayers);
     }
   };
 
@@ -327,7 +357,6 @@ function BuildModels() {
             >
               {isGenerating ? "Generating..." : "Export Code"}
             </button>
-            <button className="save-model-btn">Train Model</button>
           </div>
         </div>
 
@@ -363,12 +392,6 @@ function BuildModels() {
 
         {/* --- Right Column: Configuration Panel --- */}
         <div className="right-config-panel">
-          <div className="config-tabs">
-            <button className="config-tab active">Input</button>
-            <button className="config-tab">Training</button>
-            <button className="config-tab">Output</button>
-          </div>
-
           {/* Input Configuration */}
           <div className="config-section">
             <h3 className="config-title">Input Configuration</h3>

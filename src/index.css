@@ -11,7 +11,7 @@
 
   color-scheme: dark;
   color: rgba(255, 255, 255, 0.87);
-  background-color: #0a0e27;
+  background-color: #050a08;
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -24,7 +24,7 @@ body {
   padding: 0;
   min-width: 320px;
   min-height: 100vh;
-  background: linear-gradient(135deg, #0a0e27 0%, #1a1d3a 50%, #2d3250 100%);
+  background: #050a08;
 }
 
 #root {

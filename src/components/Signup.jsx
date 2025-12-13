@@ -75,7 +75,7 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
       <HyperspeedBackground />
       <div className="auth-left">
         <div className="auth-card">
-          <h2>Welcome To Layr</h2>
+          <h2>Welcome to the DL Model Builder</h2>
           <p className="auth-subtitle">Create your account</p>
 
           <form onSubmit={handleSubmit}>
