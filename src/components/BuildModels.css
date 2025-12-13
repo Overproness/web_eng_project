@@ -14,20 +14,21 @@
 /* --- Layout Container --- */
 .builder-container {
   display: flex;
-  gap: 24px; 
-  max-width: 1400px;
+  gap: 20px; 
+  max-width: 1600px;
   width: 100%;
 }
 
 /* --- Left Column: Layer Palette --- */
 .left-palette {
-  flex: 0 0 280px; 
-  background-color: rgba(255, 255, 255, 0.03); /* Glass effect */
+  flex: 0 0 240px; 
+  background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
-  padding: 24px;
+  padding: 20px;
   border-radius: 8px;
   height: fit-content;
-  min-height: 600px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
 }
 
 .palette-title {
@@ -93,14 +94,26 @@
 }
 
 /* --- Right Column: Canvas --- */
-.right-canvas {
-  flex-grow: 1; 
-  padding: 30px;
+.middle-canvas {
+  flex: 1; 
+  padding: 24px;
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+}
+
+/* --- Right Config Panel --- */
+.right-config-panel {
+  flex: 0 0 320px;
+  background-color: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  padding: 20px;
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
 }
 
 .canvas-header {
@@ -123,18 +136,18 @@
 /* --- Architecture Area (Drop Zone) --- */
 .architecture-area {
   flex-grow: 1;
-  min-height: 500px;
+  min-height: 400px;
   border: 2px dashed rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start; /* Items start from top */
+  justify-content: flex-start;
   align-items: center;
   text-align: center;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   background-color: rgba(0, 0, 0, 0.2);
   transition: all 0.2s;
-  padding: 40px;
+  padding: 30px;
   overflow-y: auto;
 }
 
@@ -178,7 +191,7 @@
 .dropped-layer-card {
   background-color: #1a1a1a;
   border: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 20px;
+  padding: 16px;
   border-radius: 8px;
   display: flex;
   justify-content: space-between;
@@ -186,6 +199,13 @@
   position: relative;
   box-shadow: 0 4px 10px rgba(0,0,0,0.3);
   animation: popIn 0.3s ease-out;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.dropped-layer-card.selected {
+  border-color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.05);
 }
 
 /* Connecting Arrow */
@@ -203,13 +223,19 @@
 .dropped-layer-card:hover {
   border-color: #22c55e;
   transform: translateX(5px);
-  transition: transform 0.2s;
 }
 
 .layer-info {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex: 1;
+}
+
+.layer-details {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
 .layer-index {
@@ -223,12 +249,46 @@
   justify-content: center;
   font-size: 12px;
   font-weight: 700;
+  flex-shrink: 0;
 }
 
 .layer-type {
-  font-size: 1.1rem;
+  font-size: 1rem;
   font-weight: 600;
   color: #ffffff;
+}
+
+.layer-params-preview {
+  font-size: 0.75rem;
+  color: #9ca3af;
+}
+
+.layer-actions {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+
+.move-btn {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #9ca3af;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.move-btn:hover:not(:disabled) {
+  background: rgba(34, 197, 94, 0.1);
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.move-btn:disabled {
+  opacity: 0.3;
+  cursor: not-allowed;
 }
 
 .remove-layer-btn {
@@ -240,6 +300,7 @@
   cursor: pointer;
   padding: 0 8px;
   border-radius: 4px;
+  transition: all 0.2s;
 }
 
 .remove-layer-btn:hover {
@@ -276,15 +337,301 @@
   color: #ffffff;
 }
 
-.export-btn:hover {
+.export-btn:hover:not(:disabled) {
   border-color: #ffffff;
   background-color: rgba(255, 255, 255, 0.05);
+}
+
+.export-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .save-model-btn {
   background-color: #22c55e; 
   border: none;
   color: #050b08; /* Dark text on green button */
+}
+
+.save-model-btn:hover {
+  background-color: #16a34a;
+}
+
+/* --- Configuration Panel --- */
+.config-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.config-tab {
+  padding: 8px 16px;
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.config-tab.active {
+  color: #22c55e;
+  border-bottom-color: #22c55e;
+}
+
+.config-tab:hover {
+  color: #ffffff;
+}
+
+.config-section {
+  margin-bottom: 24px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.config-section:last-child {
+  border-bottom: none;
+}
+
+.config-title {
+  font-size: 1rem;
+  color: #ffffff;
+  margin: 0 0 16px 0;
+  font-weight: 600;
+}
+
+.config-field {
+  margin-bottom: 16px;
+}
+
+.config-field label {
+  display: block;
+  color: #d1d5db;
+  font-size: 0.85rem;
+  margin-bottom: 6px;
+  font-weight: 500;
+}
+
+.config-field input[type="text"],
+.config-field input[type="number"],
+.config-field select {
+  width: 100%;
+  padding: 8px 12px;
+  background-color: rgba(0, 0, 0, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 6px;
+  color: #ffffff;
+  font-size: 0.9rem;
+  outline: none;
+  transition: all 0.2s;
+}
+
+.config-field input:focus,
+.config-field select:focus {
+  border-color: #22c55e;
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.config-field select {
+  cursor: pointer;
+}
+
+.config-field select[multiple] {
+  min-height: 100px;
+}
+
+.field-hint {
+  display: block;
+  font-size: 0.75rem;
+  color: #6b7280;
+  margin-top: 4px;
+}
+
+.checkbox-field label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+
+.checkbox-field input[type="checkbox"] {
+  margin-right: 8px;
+  cursor: pointer;
+  width: 16px;
+  height: 16px;
+}
+
+.layer-params-section {
+  background-color: rgba(34, 197, 94, 0.05);
+  border: 1px solid rgba(34, 197, 94, 0.2);
+  border-radius: 8px;
+  padding: 16px;
+}
+
+.no-params {
+  color: #6b7280;
+  font-size: 0.85rem;
+  font-style: italic;
+  margin: 0;
+}
+
+/* Scrollbar styling for config panel */
+.right-config-panel::-webkit-scrollbar {
+  width: 6px;
+}
+
+.right-config-panel::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+}
+
+.right-config-panel::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.right-config-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* --- Code Modal --- */
+.code-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.2s ease-out;
+}
+
+.code-modal {
+  background-color: #1a1a1a;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s ease-out;
+}
+
+.code-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 24px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.code-modal-header h2 {
+  margin: 0;
+  color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.close-modal-btn {
+  background: transparent;
+  border: none;
+  color: #9ca3af;
+  font-size: 32px;
+  cursor: pointer;
+  padding: 0;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
+  transition: all 0.2s;
+}
+
+.close-modal-btn:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.code-modal-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px;
+  background-color: #0d0d0d;
+}
+
+.code-display {
+  margin: 0;
+  padding: 0;
+  background-color: transparent;
+  color: #e5e7eb;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  white-space: pre;
+  overflow-x: auto;
+}
+
+.code-modal-footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  padding: 20px 24px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.copy-code-btn,
+.close-btn {
+  padding: 10px 20px;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-size: 0.9rem;
+}
+
+.copy-code-btn {
+  background-color: #22c55e;
+  border: none;
+  color: #050b08;
+}
+
+.copy-code-btn:hover {
+  background-color: #16a34a;
+}
+
+.close-btn {
+  background-color: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: #ffffff;
+}
+
+.close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  border-color: #ffffff;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes slideUp {
+  from { 
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to { 
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .save-model-btn:hover {

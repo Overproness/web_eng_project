@@ -13,6 +13,9 @@ app.use("/users", usersRouter);
 const authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
 
+const codegenRouter = require("./routes/codegen");
+app.use("/codegen", codegenRouter);
+
 const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
