@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
-import './BuildModels.css';
-
-const API_URL = 'http://localhost:4000';
+import { useState } from "react";
+import { backend_url } from "../utils/config";
+import "./BuildModels.css";
 
 function BuildModels() {
-  const [searchTerm, setSearchTerm] = useState('');
+  const [searchTerm, setSearchTerm] = useState("");
   // State to store the layers dropped onto the canvas
   const [droppedLayers, setDroppedLayers] = useState([]);
   // State for visual feedback when dragging over the canvas
@@ -16,9 +15,9 @@ function BuildModels() {
   const [isGenerating, setIsGenerating] = useState(false);
   // State for input configuration
   const [inputConfig, setInputConfig] = useState({
-    inputShape: '',
-    dataPreprocessing: 'normalize',
-    augmentation: false
+    inputShape: "",
+    dataPreprocessing: "normalize",
+    augmentation: false,
   });
   // State for training configuration
   const [trainingConfig, setTrainingConfig] = useState({
@@ -26,39 +25,49 @@ function BuildModels() {
     validationSplit: 0.2,
     epochs: 10,
     batchSize: 32,
-    optimizer: 'adam',
+    optimizer: "adam",
     learningRate: 0.001,
-    lossFunction: 'categorical_crossentropy'
+    lossFunction: "categorical_crossentropy",
   });
   // State for output/evaluation configuration
   const [outputConfig, setOutputConfig] = useState({
-    metrics: ['accuracy'],
+    metrics: ["accuracy"],
     evaluateOnTestSet: true,
     saveModel: true,
-    modelName: 'my_model'
+    modelName: "my_model",
   });
 
   const layerCategories = {
-    'Convolutional': ['Conv2D', 'MaxPooling2D', 'AvgPooling2D', 'SeparableConv2D'],
-    'Core': ['Dense', 'Flatten', 'Dropout', 'Input'],
-    'Activations': ['ReLU', 'Softmax', 'Sigmoid', 'Tanh']
+    Convolutional: [
+      "Conv2D",
+      "MaxPooling2D",
+      "AvgPooling2D",
+      "SeparableConv2D",
+    ],
+    Core: ["Dense", "Flatten", "Dropout", "Input"],
+    Activations: ["ReLU", "Softmax", "Sigmoid", "Tanh"],
   };
 
   // Default parameters for each layer type
   const getDefaultParams = (layerType) => {
     const defaults = {
-      'Conv2D': { filters: 32, kernelSize: 3, activation: 'relu', padding: 'same' },
-      'MaxPooling2D': { poolSize: 2, strides: 2 },
-      'AvgPooling2D': { poolSize: 2, strides: 2 },
-      'SeparableConv2D': { filters: 64, kernelSize: 3, activation: 'relu' },
-      'Dense': { units: 128, activation: 'relu' },
-      'Flatten': {},
-      'Dropout': { rate: 0.5 },
-      'Input': { shape: '28, 28, 1' },
-      'ReLU': {},
-      'Softmax': {},
-      'Sigmoid': {},
-      'Tanh': {}
+      Conv2D: {
+        filters: 32,
+        kernelSize: 3,
+        activation: "relu",
+        padding: "same",
+      },
+      MaxPooling2D: { poolSize: 2, strides: 2 },
+      AvgPooling2D: { poolSize: 2, strides: 2 },
+      SeparableConv2D: { filters: 64, kernelSize: 3, activation: "relu" },
+      Dense: { units: 128, activation: "relu" },
+      Flatten: {},
+      Dropout: { rate: 0.5 },
+      Input: { shape: "28, 28, 1" },
+      ReLU: {},
+      Softmax: {},
+      Sigmoid: {},
+      Tanh: {},
     };
     return defaults[layerType] || {};
   };
@@ -85,14 +94,14 @@ function BuildModels() {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDraggingOver(false);
-    
+
     const layerType = e.dataTransfer.getData("layerType");
-    
+
     if (layerType) {
       const newLayer = {
         id: Date.now(),
         type: layerType,
-        params: getDefaultParams(layerType)
+        params: getDefaultParams(layerType),
       };
       setDroppedLayers([...droppedLayers, newLayer]);
     }
@@ -100,7 +109,7 @@ function BuildModels() {
 
   // Helper to remove a layer
   const removeLayer = (idToRemove) => {
-    setDroppedLayers(droppedLayers.filter(layer => layer.id !== idToRemove));
+    setDroppedLayers(droppedLayers.filter((layer) => layer.id !== idToRemove));
     if (selectedLayer?.id === idToRemove) {
       setSelectedLayer(null);
     }
@@ -108,24 +117,29 @@ function BuildModels() {
 
   // Update layer parameters
   const updateLayerParam = (layerId, paramName, value) => {
-    setDroppedLayers(droppedLayers.map(layer => {
-      if (layer.id === layerId) {
-        return {
-          ...layer,
-          params: { ...layer.params, [paramName]: value }
-        };
-      }
-      return layer;
-    }));
+    setDroppedLayers(
+      droppedLayers.map((layer) => {
+        if (layer.id === layerId) {
+          return {
+            ...layer,
+            params: { ...layer.params, [paramName]: value },
+          };
+        }
+        return layer;
+      })
+    );
   };
 
   // Move layer up/down
   const moveLayer = (index, direction) => {
     const newLayers = [...droppedLayers];
-    const targetIndex = direction === 'up' ? index - 1 : index + 1;
-    
+    const targetIndex = direction === "up" ? index - 1 : index + 1;
+
     if (targetIndex >= 0 && targetIndex < newLayers.length) {
-      [newLayers[index], newLayers[targetIndex]] = [newLayers[targetIndex], newLayers[index]];
+      [newLayers[index], newLayers[targetIndex]] = [
+        newLayers[targetIndex],
+        newLayers[index],
+      ];
       setDroppedLayers(newLayers);
     }
   };
@@ -133,35 +147,37 @@ function BuildModels() {
   // Generate Python code
   const handleExportCode = async () => {
     if (droppedLayers.length === 0) {
-      alert('Please add at least one layer to your model!');
+      alert("Please add at least one layer to your model!");
       return;
     }
 
     setIsGenerating(true);
     try {
-      const response = await fetch(`${API_URL}/codegen/generate`, {
-        method: 'POST',
+      const response = await fetch(`${backend_url}/codegen/generate`, {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           layers: droppedLayers,
           inputConfig,
           trainingConfig,
-          outputConfig
-        })
+          outputConfig,
+        }),
       });
 
       const data = await response.json();
-      
+
       if (data.success) {
         setGeneratedCode(data.code);
       } else {
-        alert('Failed to generate code: ' + (data.error || 'Unknown error'));
+        alert("Failed to generate code: " + (data.error || "Unknown error"));
       }
     } catch (error) {
-      console.error('Error generating code:', error);
-      alert('Failed to connect to the server. Make sure the backend is running.');
+      console.error("Error generating code:", error);
+      alert(
+        "Failed to connect to the server. Make sure the backend is running."
+      );
     } finally {
       setIsGenerating(false);
     }
@@ -171,7 +187,7 @@ function BuildModels() {
   const handleCopyCode = () => {
     if (generatedCode) {
       navigator.clipboard.writeText(generatedCode);
-      alert('Code copied to clipboard!');
+      alert("Code copied to clipboard!");
     }
   };
 
@@ -183,15 +199,14 @@ function BuildModels() {
   return (
     <div className="model-builder-page">
       <div className="builder-container">
-        
         {/* --- Left Column: Layer Palette --- */}
         <div className="left-palette">
           <h3 className="palette-title">Layers</h3>
-          
+
           <div className="search-box">
-            <input 
-              type="text" 
-              placeholder="Search layers..." 
+            <input
+              type="text"
+              placeholder="Search layers..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
             />
@@ -201,17 +216,21 @@ function BuildModels() {
             {Object.entries(layerCategories).map(([category, layers]) => (
               <div key={category} className="layer-category">
                 <h4 className="category-title">{category}</h4>
-                {layers.filter(l => l.toLowerCase().includes(searchTerm.toLowerCase())).map(layer => (
-                  <div 
-                    key={layer} 
-                    className="layer-item" 
-                    draggable="true"
-                    onDragStart={(e) => handleDragStart(e, layer)}
-                  >
-                    <span className="layer-icon">+</span>
-                    {layer}
-                  </div>
-                ))}
+                {layers
+                  .filter((l) =>
+                    l.toLowerCase().includes(searchTerm.toLowerCase())
+                  )
+                  .map((layer) => (
+                    <div
+                      key={layer}
+                      className="layer-item"
+                      draggable="true"
+                      onDragStart={(e) => handleDragStart(e, layer)}
+                    >
+                      <span className="layer-icon">+</span>
+                      {layer}
+                    </div>
+                  ))}
               </div>
             ))}
           </div>
@@ -224,8 +243,8 @@ function BuildModels() {
             <p className="canvas-subtitle">Drag layers to build your model</p>
           </div>
 
-          <div 
-            className={`architecture-area ${isDraggingOver ? 'drag-over' : ''}`}
+          <div
+            className={`architecture-area ${isDraggingOver ? "drag-over" : ""}`}
             onDragOver={handleDragOver}
             onDragLeave={handleDragLeave}
             onDrop={handleDrop}
@@ -234,14 +253,18 @@ function BuildModels() {
               <div className="drag-placeholder">
                 <span className="placeholder-icon">🏗️</span>
                 <h3>Drag layers here</h3>
-                <p className="placeholder-text">Start by adding an Input layer</p>
+                <p className="placeholder-text">
+                  Start by adding an Input layer
+                </p>
               </div>
             ) : (
               <div className="model-stack">
                 {droppedLayers.map((layer, index) => (
-                  <div 
-                    key={layer.id} 
-                    className={`dropped-layer-card ${selectedLayer?.id === layer.id ? 'selected' : ''}`}
+                  <div
+                    key={layer.id}
+                    className={`dropped-layer-card ${
+                      selectedLayer?.id === layer.id ? "selected" : ""
+                    }`}
                     onClick={() => setSelectedLayer(layer)}
                   >
                     <div className="layer-info">
@@ -249,32 +272,42 @@ function BuildModels() {
                       <div className="layer-details">
                         <span className="layer-type">{layer.type}</span>
                         <span className="layer-params-preview">
-                          {Object.entries(layer.params).slice(0, 2).map(([key, val]) => 
-                            `${key}: ${val}`
-                          ).join(', ')}
+                          {Object.entries(layer.params)
+                            .slice(0, 2)
+                            .map(([key, val]) => `${key}: ${val}`)
+                            .join(", ")}
                         </span>
                       </div>
                     </div>
                     <div className="layer-actions">
-                      <button 
+                      <button
                         className="move-btn"
-                        onClick={(e) => { e.stopPropagation(); moveLayer(index, 'up'); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          moveLayer(index, "up");
+                        }}
                         disabled={index === 0}
                         title="Move Up"
                       >
                         ↑
                       </button>
-                      <button 
+                      <button
                         className="move-btn"
-                        onClick={(e) => { e.stopPropagation(); moveLayer(index, 'down'); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          moveLayer(index, "down");
+                        }}
                         disabled={index === droppedLayers.length - 1}
                         title="Move Down"
                       >
                         ↓
                       </button>
-                      <button 
+                      <button
                         className="remove-layer-btn"
-                        onClick={(e) => { e.stopPropagation(); removeLayer(layer.id); }}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          removeLayer(layer.id);
+                        }}
                         title="Remove Layer"
                       >
                         ×
@@ -287,12 +320,12 @@ function BuildModels() {
           </div>
 
           <div className="action-buttons">
-            <button 
-              className="export-btn" 
+            <button
+              className="export-btn"
               onClick={handleExportCode}
               disabled={isGenerating || droppedLayers.length === 0}
             >
-              {isGenerating ? 'Generating...' : 'Export Code'}
+              {isGenerating ? "Generating..." : "Export Code"}
             </button>
             <button className="save-model-btn">Train Model</button>
           </div>
@@ -304,7 +337,12 @@ function BuildModels() {
             <div className="code-modal" onClick={(e) => e.stopPropagation()}>
               <div className="code-modal-header">
                 <h2>Generated TensorFlow Code</h2>
-                <button className="close-modal-btn" onClick={handleCloseCodeModal}>×</button>
+                <button
+                  className="close-modal-btn"
+                  onClick={handleCloseCodeModal}
+                >
+                  ×
+                </button>
               </div>
               <div className="code-modal-body">
                 <pre className="code-display">
@@ -334,22 +372,29 @@ function BuildModels() {
           {/* Input Configuration */}
           <div className="config-section">
             <h3 className="config-title">Input Configuration</h3>
-            
+
             <div className="config-field">
               <label>Input Shape</label>
-              <input 
-                type="text" 
+              <input
+                type="text"
                 placeholder="e.g., 28, 28, 1"
                 value={inputConfig.inputShape}
-                onChange={(e) => setInputConfig({...inputConfig, inputShape: e.target.value})}
+                onChange={(e) =>
+                  setInputConfig({ ...inputConfig, inputShape: e.target.value })
+                }
               />
             </div>
 
             <div className="config-field">
               <label>Data Preprocessing</label>
-              <select 
+              <select
                 value={inputConfig.dataPreprocessing}
-                onChange={(e) => setInputConfig({...inputConfig, dataPreprocessing: e.target.value})}
+                onChange={(e) =>
+                  setInputConfig({
+                    ...inputConfig,
+                    dataPreprocessing: e.target.value,
+                  })
+                }
               >
                 <option value="normalize">Normalize (0-1)</option>
                 <option value="standardize">Standardize (mean=0, std=1)</option>
@@ -359,10 +404,15 @@ function BuildModels() {
 
             <div className="config-field checkbox-field">
               <label>
-                <input 
+                <input
                   type="checkbox"
                   checked={inputConfig.augmentation}
-                  onChange={(e) => setInputConfig({...inputConfig, augmentation: e.target.checked})}
+                  onChange={(e) =>
+                    setInputConfig({
+                      ...inputConfig,
+                      augmentation: e.target.checked,
+                    })
+                  }
                 />
                 Enable Data Augmentation
               </label>
@@ -372,58 +422,87 @@ function BuildModels() {
           {/* Training Configuration */}
           <div className="config-section">
             <h3 className="config-title">Training Configuration</h3>
-            
+
             <div className="config-field">
               <label>Train/Test Split</label>
-              <input 
-                type="number" 
-                min="0" 
-                max="1" 
+              <input
+                type="number"
+                min="0"
+                max="1"
                 step="0.1"
                 value={trainingConfig.trainTestSplit}
-                onChange={(e) => setTrainingConfig({...trainingConfig, trainTestSplit: parseFloat(e.target.value)})}
+                onChange={(e) =>
+                  setTrainingConfig({
+                    ...trainingConfig,
+                    trainTestSplit: parseFloat(e.target.value),
+                  })
+                }
               />
-              <span className="field-hint">{(trainingConfig.trainTestSplit * 100).toFixed(0)}% training</span>
+              <span className="field-hint">
+                {(trainingConfig.trainTestSplit * 100).toFixed(0)}% training
+              </span>
             </div>
 
             <div className="config-field">
               <label>Validation Split</label>
-              <input 
-                type="number" 
-                min="0" 
-                max="1" 
+              <input
+                type="number"
+                min="0"
+                max="1"
                 step="0.1"
                 value={trainingConfig.validationSplit}
-                onChange={(e) => setTrainingConfig({...trainingConfig, validationSplit: parseFloat(e.target.value)})}
+                onChange={(e) =>
+                  setTrainingConfig({
+                    ...trainingConfig,
+                    validationSplit: parseFloat(e.target.value),
+                  })
+                }
               />
-              <span className="field-hint">{(trainingConfig.validationSplit * 100).toFixed(0)}% validation</span>
+              <span className="field-hint">
+                {(trainingConfig.validationSplit * 100).toFixed(0)}% validation
+              </span>
             </div>
 
             <div className="config-field">
               <label>Epochs</label>
-              <input 
-                type="number" 
+              <input
+                type="number"
                 min="1"
                 value={trainingConfig.epochs}
-                onChange={(e) => setTrainingConfig({...trainingConfig, epochs: parseInt(e.target.value)})}
+                onChange={(e) =>
+                  setTrainingConfig({
+                    ...trainingConfig,
+                    epochs: parseInt(e.target.value),
+                  })
+                }
               />
             </div>
 
             <div className="config-field">
               <label>Batch Size</label>
-              <input 
-                type="number" 
+              <input
+                type="number"
                 min="1"
                 value={trainingConfig.batchSize}
-                onChange={(e) => setTrainingConfig({...trainingConfig, batchSize: parseInt(e.target.value)})}
+                onChange={(e) =>
+                  setTrainingConfig({
+                    ...trainingConfig,
+                    batchSize: parseInt(e.target.value),
+                  })
+                }
               />
             </div>
 
             <div className="config-field">
               <label>Optimizer</label>
-              <select 
+              <select
                 value={trainingConfig.optimizer}
-                onChange={(e) => setTrainingConfig({...trainingConfig, optimizer: e.target.value})}
+                onChange={(e) =>
+                  setTrainingConfig({
+                    ...trainingConfig,
+                    optimizer: e.target.value,
+                  })
+                }
               >
                 <option value="adam">Adam</option>
                 <option value="sgd">SGD</option>
@@ -434,21 +513,33 @@ function BuildModels() {
 
             <div className="config-field">
               <label>Learning Rate</label>
-              <input 
-                type="number" 
+              <input
+                type="number"
                 step="0.0001"
                 value={trainingConfig.learningRate}
-                onChange={(e) => setTrainingConfig({...trainingConfig, learningRate: parseFloat(e.target.value)})}
+                onChange={(e) =>
+                  setTrainingConfig({
+                    ...trainingConfig,
+                    learningRate: parseFloat(e.target.value),
+                  })
+                }
               />
             </div>
 
             <div className="config-field">
               <label>Loss Function</label>
-              <select 
+              <select
                 value={trainingConfig.lossFunction}
-                onChange={(e) => setTrainingConfig({...trainingConfig, lossFunction: e.target.value})}
+                onChange={(e) =>
+                  setTrainingConfig({
+                    ...trainingConfig,
+                    lossFunction: e.target.value,
+                  })
+                }
               >
-                <option value="categorical_crossentropy">Categorical Crossentropy</option>
+                <option value="categorical_crossentropy">
+                  Categorical Crossentropy
+                </option>
                 <option value="binary_crossentropy">Binary Crossentropy</option>
                 <option value="mse">Mean Squared Error</option>
                 <option value="mae">Mean Absolute Error</option>
@@ -459,16 +550,21 @@ function BuildModels() {
           {/* Output/Evaluation Configuration */}
           <div className="config-section">
             <h3 className="config-title">Output & Evaluation</h3>
-            
+
             <div className="config-field">
               <label>Metrics</label>
-              <select 
+              <select
                 multiple
                 value={outputConfig.metrics}
-                onChange={(e) => setOutputConfig({
-                  ...outputConfig, 
-                  metrics: Array.from(e.target.selectedOptions, option => option.value)
-                })}
+                onChange={(e) =>
+                  setOutputConfig({
+                    ...outputConfig,
+                    metrics: Array.from(
+                      e.target.selectedOptions,
+                      (option) => option.value
+                    ),
+                  })
+                }
               >
                 <option value="accuracy">Accuracy</option>
                 <option value="precision">Precision</option>
@@ -479,10 +575,15 @@ function BuildModels() {
 
             <div className="config-field checkbox-field">
               <label>
-                <input 
+                <input
                   type="checkbox"
                   checked={outputConfig.evaluateOnTestSet}
-                  onChange={(e) => setOutputConfig({...outputConfig, evaluateOnTestSet: e.target.checked})}
+                  onChange={(e) =>
+                    setOutputConfig({
+                      ...outputConfig,
+                      evaluateOnTestSet: e.target.checked,
+                    })
+                  }
                 />
                 Evaluate on Test Set
               </label>
@@ -490,10 +591,15 @@ function BuildModels() {
 
             <div className="config-field checkbox-field">
               <label>
-                <input 
+                <input
                   type="checkbox"
                   checked={outputConfig.saveModel}
-                  onChange={(e) => setOutputConfig({...outputConfig, saveModel: e.target.checked})}
+                  onChange={(e) =>
+                    setOutputConfig({
+                      ...outputConfig,
+                      saveModel: e.target.checked,
+                    })
+                  }
                 />
                 Save Model After Training
               </label>
@@ -501,10 +607,15 @@ function BuildModels() {
 
             <div className="config-field">
               <label>Model Name</label>
-              <input 
+              <input
                 type="text"
                 value={outputConfig.modelName}
-                onChange={(e) => setOutputConfig({...outputConfig, modelName: e.target.value})}
+                onChange={(e) =>
+                  setOutputConfig({
+                    ...outputConfig,
+                    modelName: e.target.value,
+                  })
+                }
               />
             </div>
           </div>
@@ -512,30 +623,43 @@ function BuildModels() {
           {/* Layer Parameters Section */}
           {selectedLayer && (
             <div className="config-section layer-params-section">
-              <h3 className="config-title">Layer Parameters: {selectedLayer.type}</h3>
-              
+              <h3 className="config-title">
+                Layer Parameters: {selectedLayer.type}
+              </h3>
+
               {Object.keys(selectedLayer.params).length > 0 ? (
-                Object.entries(selectedLayer.params).map(([paramName, paramValue]) => (
-                  <div key={paramName} className="config-field">
-                    <label>{paramName.charAt(0).toUpperCase() + paramName.slice(1)}</label>
-                    <input 
-                      type={typeof paramValue === 'number' ? 'number' : 'text'}
-                      value={paramValue}
-                      onChange={(e) => updateLayerParam(
-                        selectedLayer.id, 
-                        paramName, 
-                        typeof paramValue === 'number' ? parseFloat(e.target.value) || 0 : e.target.value
-                      )}
-                    />
-                  </div>
-                ))
+                Object.entries(selectedLayer.params).map(
+                  ([paramName, paramValue]) => (
+                    <div key={paramName} className="config-field">
+                      <label>
+                        {paramName.charAt(0).toUpperCase() + paramName.slice(1)}
+                      </label>
+                      <input
+                        type={
+                          typeof paramValue === "number" ? "number" : "text"
+                        }
+                        value={paramValue}
+                        onChange={(e) =>
+                          updateLayerParam(
+                            selectedLayer.id,
+                            paramName,
+                            typeof paramValue === "number"
+                              ? parseFloat(e.target.value) || 0
+                              : e.target.value
+                          )
+                        }
+                      />
+                    </div>
+                  )
+                )
               ) : (
-                <p className="no-params">This layer has no configurable parameters</p>
+                <p className="no-params">
+                  This layer has no configurable parameters
+                </p>
               )}
             </div>
           )}
         </div>
-
       </div>
     </div>
   );
