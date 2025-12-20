@@ -76,8 +76,8 @@ const HyperspeedBackground = () => {
         color: lightColors[Math.floor(Math.random() * lightColors.length)],
         transparent: true,
         opacity: 0.9,
-        emissive: lightColors[Math.floor(Math.random() * lightColors.length)],
-        emissiveIntensity: 0.5,
+        // emissive: lightColors[Math.floor(Math.random() * lightColors.length)],
+        // emissiveIntensity: 0.5,
       });
       const light = new THREE.Mesh(geometry, material);
 
@@ -169,6 +169,7 @@ const HyperspeedBackground = () => {
 
       // Move light trails
       lights.forEach((light) => {
+        // console.log("🚀 ~ animate ~ light:", light);
         light.position.z += light.userData.speed * delta;
 
         // Add slight horizontal movement
@@ -181,14 +182,14 @@ const HyperspeedBackground = () => {
           light.position.x = lane * (2 + Math.random() * 2);
           light.userData.lane = lane;
           // Change color occasionally
-          if (Math.random() > 0.7) {
-            light.material.color.setHex(
-              lightColors[Math.floor(Math.random() * lightColors.length)]
-            );
-            light.material.emissive.setHex(
-              lightColors[Math.floor(Math.random() * lightColors.length)]
-            );
-          }
+          // if (Math.random() > 0.7) {
+          //   light.material.color.setHex(
+          //     lightColors[Math.floor(Math.random() * lightColors.length)]
+          //   );
+          //   light.material.emissive.setHex(
+          //     lightColors[Math.floor(Math.random() * lightColors.length)]
+          //   );
+          // }
         }
       });
 
