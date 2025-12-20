@@ -67,6 +67,10 @@
   backdrop-filter: none !important;
 }
 
+.hero-content button {
+  margin-top: 20px;
+}
+
 /* UPDATED: Pure bright white text */
 .hero-title {
   font-family: "Inter", sans-serif;

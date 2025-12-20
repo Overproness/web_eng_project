@@ -1,5 +1,5 @@
 /* About.css */
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
   --bg-dark: #050a08;
@@ -15,7 +15,7 @@
   min-height: 100vh;
   background-color: var(--bg-dark);
   color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -41,7 +41,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  
+
   /* This creates the dark "Glow" effect from your image. 
      If you have the network lines image, add: background-image: url('your-network-image.png'); */
   background: radial-gradient(circle at center, #1a2e22 0%, #050b08 70%);
@@ -55,11 +55,11 @@
 }
 
 .about-hero-title {
-  font-family: 'DM Serif Display', serif;
+  /* font-family: 'DM Serif Display', serif; */
   font-size: 56px;
   margin-bottom: 16px;
   color: #ffffff;
-  text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+  text-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
 .about-hero-subtitle {
@@ -97,7 +97,7 @@
 }
 
 .text-section h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 22px;
   font-weight: 700;
   color: #ffffff;

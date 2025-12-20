@@ -1,5 +1,5 @@
 /* UserSettings.css */
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap");
 
 :root {
   --bg-dark: #050b08;
@@ -15,7 +15,7 @@
   min-height: 100vh;
   background-color: var(--bg-dark);
   padding: 60px 40px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   color: var(--text-primary);
   box-sizing: border-box;
 }
@@ -27,7 +27,7 @@
 }
 
 .settings-header h1 {
-  font-family: 'DM Serif Display', serif; /* Matching Home Page Title */
+  /* font-family: 'DM Serif Display', serif; Matching Home Page Title */
   font-size: 48px;
   font-weight: 400;
   color: #ffffff;
@@ -56,7 +56,7 @@
 }
 
 .settings-card h2 {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 24px;
   color: #ffffff;
   margin-bottom: 30px;
@@ -95,7 +95,7 @@
   color: #ffffff;
   transition: all 0.2s ease;
   box-sizing: border-box;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .form-group-settings input::placeholder {
@@ -128,7 +128,7 @@
   cursor: pointer;
   transition: all 0.2s ease;
   margin-top: 20px;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 .save-button:hover {
@@ -145,7 +145,7 @@
   .settings-card {
     padding: 24px;
   }
-  
+
   .settings-header h1 {
     font-size: 36px;
   }
