@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { backend_url } from "../utils/config";
 import "./BuildModels.css";
 
@@ -6,7 +6,7 @@ function BuildModels() {
   const [searchTerm, setSearchTerm] = useState("");
   // State to store the layers dropped onto the canvas
   const [droppedLayers, setDroppedLayers] = useState(() => {
-    const saved = localStorage.getItem('droppedLayers');
+    const saved = localStorage.getItem("droppedLayers");
     return saved ? JSON.parse(saved) : [];
   });
   // State for visual feedback when dragging over the canvas
@@ -18,52 +18,58 @@ function BuildModels() {
   const [isGenerating, setIsGenerating] = useState(false);
   // State for input configuration
   const [inputConfig, setInputConfig] = useState(() => {
-    const saved = localStorage.getItem('inputConfig');
-    return saved ? JSON.parse(saved) : {
-      inputShape: "",
-      dataPreprocessing: "normalize",
-      augmentation: false,
-    };
+    const saved = localStorage.getItem("inputConfig");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          inputShape: "",
+          dataPreprocessing: "normalize",
+          augmentation: false,
+        };
   });
   // State for training configuration
   const [trainingConfig, setTrainingConfig] = useState(() => {
-    const saved = localStorage.getItem('trainingConfig');
-    return saved ? JSON.parse(saved) : {
-      trainTestSplit: 0.8,
-      validationSplit: 0.2,
-      epochs: 10,
-      batchSize: 32,
-      optimizer: "adam",
-      learningRate: 0.001,
-      lossFunction: "categorical_crossentropy",
-    };
+    const saved = localStorage.getItem("trainingConfig");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          trainTestSplit: 0.8,
+          validationSplit: 0.2,
+          epochs: 10,
+          batchSize: 32,
+          optimizer: "adam",
+          learningRate: 0.001,
+          lossFunction: "categorical_crossentropy",
+        };
   });
   // State for output/evaluation configuration
   const [outputConfig, setOutputConfig] = useState(() => {
-    const saved = localStorage.getItem('outputConfig');
-    return saved ? JSON.parse(saved) : {
-      metrics: ["accuracy"],
-      evaluateOnTestSet: true,
-      saveModel: true,
-      modelName: "my_model",
-    };
+    const saved = localStorage.getItem("outputConfig");
+    return saved
+      ? JSON.parse(saved)
+      : {
+          metrics: ["accuracy"],
+          evaluateOnTestSet: true,
+          saveModel: true,
+          modelName: "my_model",
+        };
   });
 
   // Save state to localStorage whenever it changes
   useEffect(() => {
-    localStorage.setItem('droppedLayers', JSON.stringify(droppedLayers));
+    localStorage.setItem("droppedLayers", JSON.stringify(droppedLayers));
   }, [droppedLayers]);
 
   useEffect(() => {
-    localStorage.setItem('inputConfig', JSON.stringify(inputConfig));
+    localStorage.setItem("inputConfig", JSON.stringify(inputConfig));
   }, [inputConfig]);
 
   useEffect(() => {
-    localStorage.setItem('trainingConfig', JSON.stringify(trainingConfig));
+    localStorage.setItem("trainingConfig", JSON.stringify(trainingConfig));
   }, [trainingConfig]);
 
   useEffect(() => {
-    localStorage.setItem('outputConfig', JSON.stringify(outputConfig));
+    localStorage.setItem("outputConfig", JSON.stringify(outputConfig));
   }, [outputConfig]);
 
   const layerCategories = {
@@ -380,7 +386,7 @@ function BuildModels() {
               </div>
               <div className="code-modal-footer">
                 <button className="copy-code-btn" onClick={handleCopyCode}>
-                  📋 Copy to Clipboard
+                  Copy to Clipboard
                 </button>
                 <button className="close-btn" onClick={handleCloseCodeModal}>
                   Close

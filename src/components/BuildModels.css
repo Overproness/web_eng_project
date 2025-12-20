@@ -5,23 +5,23 @@
   padding: 40px;
   background-color: #050a08; /* Darker green background */
   color: #ffffff;
-  min-height: calc(100vh - 60px); 
+  min-height: calc(100vh - 60px);
   display: flex;
   justify-content: center;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
 }
 
 /* --- Layout Container --- */
 .builder-container {
   display: flex;
-  gap: 20px; 
+  gap: 20px;
   max-width: 1600px;
   width: 100%;
 }
 
 /* --- Left Column: Layer Palette --- */
 .left-palette {
-  flex: 0 0 240px; 
+  flex: 0 0 240px;
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px;
@@ -32,7 +32,7 @@
 }
 
 .palette-title {
-  color: #ffffff; 
+  color: #ffffff;
   font-size: 1.25rem;
   font-weight: 600;
   margin-top: 0;
@@ -45,7 +45,7 @@
   width: 100%;
   padding: 12px;
   margin-bottom: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.1); 
+  border: 1px solid rgba(255, 255, 255, 0.1);
   background-color: rgba(0, 0, 0, 0.2);
   color: #ffffff;
   border-radius: 6px;
@@ -95,7 +95,7 @@
 
 /* --- Right Column: Canvas --- */
 .middle-canvas {
-  flex: 1; 
+  flex: 1;
   padding: 24px;
   background-color: rgba(255, 255, 255, 0.03);
   border: 1px solid rgba(255, 255, 255, 0.08);
@@ -183,7 +183,7 @@
 .model-stack {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 25px;
   width: 100%;
   max-width: 500px;
 }
@@ -197,7 +197,7 @@
   justify-content: space-between;
   align-items: center;
   position: relative;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   animation: popIn 0.3s ease-out;
   cursor: pointer;
   transition: all 0.2s;
@@ -210,7 +210,7 @@
 
 /* Connecting Arrow */
 .dropped-layer-card:not(:last-child)::after {
-  content: '↓';
+  content: "↓";
   position: absolute;
   bottom: -28px;
   left: 50%;
@@ -309,8 +309,14 @@
 }
 
 @keyframes popIn {
-  from { opacity: 0; transform: scale(0.95) translateY(10px); }
-  to { opacity: 1; transform: scale(1) translateY(0); }
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
 }
 
 /* --- Action Buttons --- */
@@ -562,7 +568,7 @@
   padding: 0;
   background-color: transparent;
   color: #e5e7eb;
-  font-family: 'Courier New', Courier, monospace;
+  font-family: "Courier New", Courier, monospace;
   font-size: 0.9rem;
   line-height: 1.6;
   white-space: pre;
@@ -609,16 +615,20 @@
 }
 
 @keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }
 
 @keyframes slideUp {
-  from { 
+  from {
     opacity: 0;
     transform: translateY(30px);
   }
-  to { 
+  to {
     opacity: 1;
     transform: translateY(0);
   }

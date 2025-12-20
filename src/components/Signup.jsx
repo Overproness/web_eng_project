@@ -1,3 +1,4 @@
+import { Eye, EyeOff } from "lucide-react";
 import { useState } from "react";
 import { backend_url } from "../utils/config";
 import "./Auth.css";
@@ -123,7 +124,7 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
                   className="toggle-password"
                   onClick={() => setShowPassword(!showPassword)}
                 >
-                  {showPassword ? "👁️" : "👁️‍🗨️"}
+                  {showPassword ? <Eye size={20} /> : <EyeOff size={20} />}
                 </button>
               </div>
             </div>
@@ -146,7 +147,11 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
                   className="toggle-password"
                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                 >
-                  {showConfirmPassword ? "👁️" : "👁️‍🗨️"}
+                  {showConfirmPassword ? (
+                    <Eye size={20} />
+                  ) : (
+                    <EyeOff size={20} />
+                  )}
                 </button>
               </div>
             </div>
@@ -162,7 +167,7 @@ function Signup({ onSwitchToLogin, onSignupSuccess }) {
               </label>
             </div>
 
-            {error && <div className="error-message">⚠️ {error}</div>}
+            {error && <div className="error-message"> {error}</div>}
 
             <button type="submit" className="auth-button" disabled={loading}>
               {loading ? "Creating account..." : "Create an account"}
