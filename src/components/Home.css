@@ -39,7 +39,7 @@
   min-height: 480px;
 
   /* Using green.png as background */
-  background-image: url("./green.png");
+  background-image: url("../green.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

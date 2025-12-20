@@ -633,3 +633,431 @@
     transform: translateY(0);
   }
 }
+
+/* ==============================
+   RESPONSIVE DESIGN
+   ============================== */
+
+/* Large tablets and small desktops (1200px and below) */
+@media (max-width: 1200px) {
+  .builder-container {
+    gap: 16px;
+  }
+
+  .left-palette {
+    flex: 0 0 200px;
+    padding: 16px;
+  }
+
+  .right-config-panel {
+    flex: 0 0 280px;
+    padding: 16px;
+  }
+
+  .model-builder-page {
+    padding: 24px;
+  }
+
+  .canvas-title {
+    font-size: 1.5rem;
+  }
+}
+
+/* Tablets (1024px and below) */
+@media (max-width: 1024px) {
+  .builder-container {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .left-palette,
+  .right-config-panel {
+    flex: 1 1 auto;
+    max-height: none;
+    width: 100%;
+  }
+
+  .left-palette {
+    max-height: 400px;
+  }
+
+  .right-config-panel {
+    max-height: 600px;
+  }
+
+  .middle-canvas {
+    order: -1; /* Canvas appears first */
+  }
+
+  .layers-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 12px;
+  }
+
+  .layer-category {
+    grid-column: 1 / -1;
+  }
+
+  .category-title {
+    margin: 16px 0 8px 0;
+  }
+}
+
+/* Small tablets and large phones (768px and below) */
+@media (max-width: 768px) {
+  .model-builder-page {
+    padding: 16px;
+    min-height: calc(100vh - 80px);
+  }
+
+  .builder-container {
+    gap: 16px;
+  }
+
+  .canvas-title {
+    font-size: 1.25rem;
+  }
+
+  .canvas-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .middle-canvas {
+    padding: 16px;
+  }
+
+  .architecture-area {
+    min-height: 300px;
+    padding: 20px;
+  }
+
+  .drag-placeholder {
+    margin-top: 50px;
+  }
+
+  .placeholder-icon {
+    font-size: 2rem;
+  }
+
+  .model-stack {
+    max-width: 100%;
+  }
+
+  .dropped-layer-card {
+    padding: 12px;
+  }
+
+  .layer-type {
+    font-size: 0.9rem;
+  }
+
+  .layer-params-preview {
+    font-size: 0.7rem;
+  }
+
+  .layers-list {
+    grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  }
+
+  .palette-title,
+  .config-title {
+    font-size: 1.1rem;
+  }
+
+  .action-buttons {
+    gap: 12px;
+  }
+
+  .export-btn {
+    padding: 10px 20px;
+    font-size: 0.9rem;
+  }
+
+  .code-modal {
+    width: 95%;
+    max-height: 90vh;
+  }
+
+  .code-modal-header {
+    padding: 16px;
+  }
+
+  .code-modal-header h2 {
+    font-size: 1.25rem;
+  }
+
+  .code-modal-body {
+    padding: 16px;
+  }
+
+  .code-display {
+    font-size: 0.8rem;
+  }
+
+  .code-modal-footer {
+    padding: 16px;
+    flex-wrap: wrap;
+  }
+
+  .copy-code-btn,
+  .close-btn {
+    flex: 1 1 auto;
+    min-width: 120px;
+  }
+}
+
+/* Mobile phones (600px and below) */
+@media (max-width: 600px) {
+  .model-builder-page {
+    padding: 12px;
+  }
+
+  .builder-container {
+    gap: 12px;
+  }
+
+  .left-palette {
+    padding: 12px;
+  }
+
+  .palette-title {
+    font-size: 1rem;
+    margin-bottom: 12px;
+  }
+
+  .search-box input {
+    padding: 10px;
+    font-size: 0.9rem;
+  }
+
+  .layers-list {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+
+  .layer-item {
+    padding: 12px;
+    font-size: 0.9rem;
+  }
+
+  .category-title {
+    font-size: 0.8rem;
+    margin: 12px 0 8px 0;
+  }
+
+  .middle-canvas {
+    padding: 12px;
+  }
+
+  .canvas-title {
+    font-size: 1.1rem;
+  }
+
+  .canvas-subtitle {
+    font-size: 0.8rem;
+  }
+
+  .architecture-area {
+    min-height: 250px;
+    padding: 16px;
+  }
+
+  .drag-placeholder h3 {
+    font-size: 1rem;
+  }
+
+  .placeholder-text {
+    font-size: 0.85rem;
+  }
+
+  .dropped-layer-card {
+    padding: 10px;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .layer-info {
+    width: 100%;
+  }
+
+  .layer-actions {
+    width: 100%;
+    justify-content: flex-end;
+    gap: 8px;
+  }
+
+  .move-btn,
+  .remove-layer-btn {
+    padding: 8px 12px;
+    font-size: 16px;
+  }
+
+  .action-buttons {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .export-btn {
+    width: 100%;
+    padding: 12px;
+  }
+
+  .right-config-panel {
+    padding: 12px;
+  }
+
+  .config-section {
+    margin-bottom: 20px;
+    padding-bottom: 20px;
+  }
+
+  .config-title {
+    font-size: 0.95rem;
+    margin-bottom: 12px;
+  }
+
+  .config-field {
+    margin-bottom: 14px;
+  }
+
+  .config-field label {
+    font-size: 0.8rem;
+    margin-bottom: 4px;
+  }
+
+  .config-field input,
+  .config-field select {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .field-hint {
+    font-size: 0.7rem;
+  }
+
+  .code-modal-header {
+    padding: 12px;
+  }
+
+  .code-modal-header h2 {
+    font-size: 1.1rem;
+  }
+
+  .close-modal-btn {
+    font-size: 28px;
+    width: 28px;
+    height: 28px;
+  }
+
+  .code-modal-body {
+    padding: 12px;
+  }
+
+  .code-display {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .code-modal-footer {
+    padding: 12px;
+    flex-direction: column;
+  }
+
+  .copy-code-btn,
+  .close-btn {
+    width: 100%;
+    padding: 12px;
+  }
+}
+
+/* Extra small phones (400px and below) */
+@media (max-width: 400px) {
+  .model-builder-page {
+    padding: 8px;
+  }
+
+  .canvas-title {
+    font-size: 1rem;
+  }
+
+  .palette-title,
+  .config-title {
+    font-size: 0.9rem;
+  }
+
+  .layer-item {
+    padding: 10px;
+    font-size: 0.85rem;
+  }
+
+  .layer-icon {
+    margin-right: 8px;
+  }
+
+  .dropped-layer-card {
+    padding: 8px;
+  }
+
+  .layer-type {
+    font-size: 0.85rem;
+  }
+
+  .layer-params-preview {
+    font-size: 0.65rem;
+  }
+
+  .layer-index {
+    width: 24px;
+    height: 24px;
+    font-size: 11px;
+  }
+
+  .export-btn {
+    font-size: 0.85rem;
+  }
+}
+
+/* Landscape orientation optimization for tablets */
+@media (max-width: 1024px) and (orientation: landscape) {
+  .left-palette {
+    max-height: 300px;
+  }
+
+  .right-config-panel {
+    max-height: 400px;
+  }
+
+  .architecture-area {
+    min-height: 250px;
+  }
+}
+
+/* Touch device optimizations */
+@media (hover: none) and (pointer: coarse) {
+  .layer-item,
+  .move-btn,
+  .remove-layer-btn,
+  .export-btn,
+  .config-tab,
+  .copy-code-btn,
+  .close-btn,
+  .close-modal-btn {
+    min-height: 44px; /* Apple's recommended touch target size */
+    min-width: 44px;
+  }
+
+  .layer-item {
+    padding: 14px 12px;
+  }
+
+  .dropped-layer-card {
+    padding: 14px;
+  }
+
+  .config-field input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+  }
+}
