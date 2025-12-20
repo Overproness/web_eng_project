@@ -1,12 +1,12 @@
 /* Home.css */
-@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600;700&display=swap");
 
 :root {
-  --bg-dark: #050a08;  /* Darker green background */
-  --card-bg: rgba(20, 30, 25, 0.4); 
-  --card-border: rgba(34, 197, 94, 0.15); 
+  --bg-dark: #050a08; /* Darker green background */
+  --card-bg: rgba(20, 30, 25, 0.4);
+  --card-border: rgba(34, 197, 94, 0.15);
   --card-hover-bg: rgba(34, 197, 94, 0.1);
-  --primary-green: #10b981; 
+  --primary-green: #10b981;
   --primary-green-hover: #059669;
   --text-primary: #ffffff;
 }
@@ -19,7 +19,7 @@
   width: 100%;
   min-height: 100vh;
   background-color: var(--bg-dark);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   overflow-x: hidden;
   padding-bottom: 80px;
 }
@@ -37,13 +37,13 @@
 .hero-card {
   width: 100%;
   min-height: 480px;
-  
+
   /* Using green.png as background */
-  background-image: url('./green.png');
+  background-image: url("./green.png");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  
+
   border-radius: 4px;
   display: flex;
   flex-direction: column;
@@ -69,7 +69,7 @@
 
 /* UPDATED: Pure bright white text */
 .hero-title {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 56px;
   font-weight: 700;
   color: #ffffff; /* Pure bright white */
@@ -80,7 +80,7 @@
 
 /* UPDATED: Pure bright white subtitle */
 .hero-subtitle {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 18px;
   font-weight: 500;
   color: #ffffff; /* Pure bright white */
@@ -93,7 +93,7 @@
 }
 
 .primary-btn {
-  background-color: var(--primary-green); 
+  background-color: var(--primary-green);
   color: #000000;
   font-weight: 700;
   padding: 12px 32px;
@@ -146,7 +146,11 @@
   align-items: center;
   justify-content: center;
   text-align: center;
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(34, 197, 94, 0.05) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.1) 0%,
+    rgba(34, 197, 94, 0.05) 100%
+  );
   border: 2px solid var(--card-border);
   border-radius: 12px;
   padding: 20px 24px;
@@ -168,13 +172,18 @@
 }
 
 .feature-card::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(16, 185, 129, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(16, 185, 129, 0.3),
+    transparent
+  );
   transition: left 0.6s ease;
 }
 
@@ -183,10 +192,15 @@
 }
 
 .feature-card:hover {
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.2) 0%, rgba(34, 197, 94, 0.1) 100%);
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.2) 0%,
+    rgba(34, 197, 94, 0.1) 100%
+  );
   border-color: var(--primary-green);
   transform: translateY(-8px) scale(1.02);
-  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3), 0 0 30px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 20px 40px rgba(16, 185, 129, 0.3),
+    0 0 30px rgba(16, 185, 129, 0.2);
 }
 
 .feature-text {
@@ -215,16 +229,16 @@
 
 /* --- Responsive Adjustments --- */
 @media (max-width: 768px) {
-  .hero-title { 
-    font-size: 40px; 
+  .hero-title {
+    font-size: 40px;
   }
   .hero-card {
     padding: 60px 20px;
   }
-  .feature-card { 
-    flex: 1 0 45%; 
+  .feature-card {
+    flex: 1 0 45%;
   }
-  .use-case-grid { 
-    grid-template-columns: 1fr; 
+  .use-case-grid {
+    grid-template-columns: 1fr;
   }
 }

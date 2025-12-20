@@ -57,10 +57,10 @@ function Login({ onSwitchToSignup, onLoginSuccess }) {
   };
 
   return (
-    <div className="auth-container">
+    <div className="auth-container ">
       <HyperspeedBackground />
       <div className="auth-left">
-        <div className="auth-card">
+        <div className="auth-card ">
           <h2>Welcome to the DL Model Builder</h2>
           <p className="auth-subtitle">Sign in to your account</p>
 

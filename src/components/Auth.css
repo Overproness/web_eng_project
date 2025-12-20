@@ -11,7 +11,7 @@
   min-height: 100vh;
   background: #050a08;
   padding: 0;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   position: relative;
   overflow: hidden;
 }
@@ -19,7 +19,7 @@
 .auth-left {
   flex: 1;
   padding: 60px 80px;
-  max-width: 500px;
+  max-width: 700px;
   position: relative;
   z-index: 10;
 }
@@ -35,7 +35,7 @@
 }
 
 .auth-right::before {
-  content: '';
+  content: "";
   position: absolute;
   right: 0;
   top: 0;
@@ -88,10 +88,18 @@
   animation: fadeIn 0.5s ease-out backwards;
 }
 
-.form-group:nth-child(1) { animation-delay: 0.1s; }
-.form-group:nth-child(2) { animation-delay: 0.2s; }
-.form-group:nth-child(3) { animation-delay: 0.3s; }
-.form-group:nth-child(4) { animation-delay: 0.4s; }
+.form-group:nth-child(1) {
+  animation-delay: 0.1s;
+}
+.form-group:nth-child(2) {
+  animation-delay: 0.2s;
+}
+.form-group:nth-child(3) {
+  animation-delay: 0.3s;
+}
+.form-group:nth-child(4) {
+  animation-delay: 0.4s;
+}
 
 @keyframes fadeIn {
   from {
@@ -223,13 +231,18 @@
 }
 
 .auth-button::before {
-  content: '';
+  content: "";
   position: absolute;
   top: 0;
   left: -100%;
   width: 100%;
   height: 100%;
-  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
   transition: left 0.5s ease;
 }
 
@@ -258,7 +271,7 @@
 
 .divider::before,
 .divider::after {
-  content: '';
+  content: "";
   flex: 1;
   height: 1px;
   background: rgba(255, 255, 255, 0.1);
@@ -389,5 +402,11 @@
 
   .auth-right {
     display: none;
+  }
+
+  .form-options {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 10px;
   }
 }
