@@ -17,6 +17,8 @@
   gap: 20px;
   max-width: 1600px;
   width: 100%;
+  align-items: stretch; /* keep sidebars the same height as middle column */
+  min-height: calc(100vh - 120px);
 }
 
 /* --- Left Column: Layer Palette --- */
@@ -26,9 +28,11 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px;
   border-radius: 8px;
-  height: fit-content;
-  max-height: calc(100vh - 140px);
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  max-height: none; /* allow stretching with middle column */
+  overflow-y: auto; /* allow scrolling when content is long */
 }
 
 .palette-title {
@@ -55,6 +59,22 @@
 
 .search-box input:focus {
   border-color: #22c55e;
+}
+
+/* Make the layers list scroll within the left palette while keeping full height */
+.left-palette .layers-list {
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+/* Allow the right config panel content to scroll while keeping header/footer visible */
+.right-config-panel .config-section,
+.right-config-panel > .config-section:last-child {
+  overflow: visible;
+}
+.right-config-panel .config-scrollable {
+  overflow-y: auto;
+  flex: 1 1 auto;
 }
 
 .category-title {
@@ -112,8 +132,11 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 20px;
-  max-height: calc(100vh - 140px);
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch;
+  max-height: none; /* allow stretching with middle column */
+  overflow: hidden;
 }
 
 .canvas-header {
@@ -425,6 +448,28 @@
   transition: all 0.2s;
 }
 
+/* Enhanced select styling (custom arrow, better padding) */
+.config-field select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #fff 50%),
+    linear-gradient(135deg, #fff 50%, transparent 50%),
+    linear-gradient(to right, rgba(255,255,255,0.03), rgba(255,255,255,0.03));
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px), 0 0;
+  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+}
+
+.config-field select:focus {
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.08);
+}
+
+.config-field select[multiple] {
+  min-height: 140px;
+}
+
 .config-field input:focus,
 .config-field select:focus {
   border-color: #22c55e;
@@ -497,8 +542,20 @@
 .checkbox-field input[type="checkbox"] {
   margin-right: 8px;
   cursor: pointer;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  accent-color: #22c55e; /* modern browsers will tint the checkbox */
+  transform: scale(1.08);
+  border-radius: 4px;
+}
+
+/* Improve hover and focus for checkboxes */
+.checkbox-field input[type="checkbox"]:hover {
+  filter: brightness(1.05);
+}
+.checkbox-field input[type="checkbox"]:focus {
+  outline: 2px solid rgba(34,197,94,0.18);
+  outline-offset: 2px;
 }
 
 .layer-params-section {
