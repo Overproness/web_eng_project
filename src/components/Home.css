@@ -40,6 +40,8 @@
 
   /* Using green.png as background */
   /* background-image: url("../green.png"); */
+  background: radial-gradient(circle at center, #1a2e22 0%, #050b08 70%);
+
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

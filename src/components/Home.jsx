@@ -1,5 +1,4 @@
-import React from 'react';
-import './Home.css';
+import "./Home.css";
 
 // Feature Card Component (without icon)
 const FeatureCard = ({ text, index }) => (
@@ -10,37 +9,43 @@ const FeatureCard = ({ text, index }) => (
 
 // 3. Main Home Component
 function Home({ onTabChange }) {
-  
   const features = [
     "No-code model building",
     "Automated training",
     "One-click deployment",
-    "Real-time monitoring"
+    "Real-time monitoring",
   ];
 
   const useCases = [
-    "Image classification", "Object detection", 
-    "Semantic segmentation", "Instance segmentation", 
-    "Image generation", "Text classification", 
-    "Text generation", "Text summarization", 
-    "Text translation", "Speech recognition", 
-    "Speech synthesis", "Time series forecasting"
+    "Image classification",
+    "Object detection",
+    "Semantic segmentation",
+    "Instance segmentation",
+    "Image generation",
+    "Text classification",
+    "Text generation",
+    "Text summarization",
+    "Text translation",
+    "Speech recognition",
+    "Speech synthesis",
+    "Time series forecasting",
   ];
 
   return (
     <div className="home-container">
-      
       {/* Hero Section */}
       <div className="hero-wrapper">
         <div className="hero-card">
           <div className="hero-content">
             <h1 className="hero-title">Build, train, and deploy AI models</h1>
             <p className="hero-subtitle">
-              DL Builder is a low-code platform that enables you to build, train, and deploy AI models without writing code. It's perfect for beginners and experts alike.
+              DL Builder is a low-code platform that enables you to build,
+              train, and deploy AI models without writing code. It's perfect for
+              beginners and experts alike.
             </p>
-            <button 
+            <button
               className="primary-btn"
-              onClick={() => onTabChange && onTabChange('build')}
+              onClick={() => onTabChange && onTabChange("build")}
             >
               Model Builder
             </button>
@@ -71,14 +76,13 @@ function Home({ onTabChange }) {
       {/* Bottom CTA */}
       <div className="bottom-cta">
         <h3>Start building your AI model today</h3>
-        <button 
+        <button
           className="primary-btn"
-          onClick={() => onTabChange && onTabChange('build')}
+          onClick={() => onTabChange && onTabChange("build")}
         >
           Model Builder
         </button>
       </div>
-
     </div>
   );
 }
