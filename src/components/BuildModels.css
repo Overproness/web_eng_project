@@ -17,7 +17,8 @@
   gap: 20px;
   max-width: 1600px;
   width: 100%;
-  align-items: flex-start; /* sidebars size to their content height */
+  align-items: stretch; /* keep sidebars the same height as middle column */
+  min-height: calc(100vh - 120px);
 }
 
 /* --- Left Column: Layer Palette --- */
@@ -29,9 +30,9 @@
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  align-self: flex-start; /* size to content */
-  max-height: none;
-  overflow: visible;
+  align-self: stretch; /* match middle column height */
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
 }
 
 .palette-title {
@@ -62,8 +63,8 @@
 
 /* Layers list: let it size to content (no forced stretching) */
 .left-palette .layers-list {
-  overflow-y: visible;
-  flex: initial;
+  overflow-y: auto;
+  flex: 1 1 auto;
 }
 
 /* Allow the right config panel content to scroll while keeping header/footer visible */
@@ -133,9 +134,9 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-self: flex-start; /* size to content */
-  max-height: none;
-  overflow: visible;
+  align-self: stretch; /* match middle column height */
+  max-height: calc(100vh - 140px);
+  overflow-y: auto;
 }
 
 .canvas-header {
@@ -497,6 +498,19 @@
 .config-field select[multiple] option:checked {
   background-color: #22c55e;
   color: #050b08;
+}
+
+/* Activation consecutive warning banner */
+.activation-warning {
+  width: 100%;
+  max-width: 100%;
+  background: linear-gradient(90deg, rgba(255,183,77,0.08), rgba(255,111,0,0.06));
+  border: 1px solid rgba(245,158,11,0.2);
+  color: #ffdba3;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 0 0 12px 0;
+  font-weight: 600;
 }
 
 .config-field input:focus,

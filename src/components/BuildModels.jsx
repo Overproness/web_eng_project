@@ -64,6 +64,30 @@ function BuildModels() {
     localStorage.setItem("droppedLayers", JSON.stringify(droppedLayers));
   }, [droppedLayers]);
 
+  // Check for consecutive activation functions and set a warning
+  const activationTypes = ["ReLU", "Softmax", "Sigmoid", "Tanh"];
+  const checkConsecutiveActivations = (layers) => {
+    for (let i = 0; i < layers.length - 1; i++) {
+      if (
+        activationTypes.includes(layers[i].type) &&
+        activationTypes.includes(layers[i + 1].type)
+      ) {
+        setWarnings((prev) => ({ ...prev, activationConsec: "Warning: Consecutive activation functions may be redundant or cause unexpected behavior." }));
+        return;
+      }
+    }
+    // no consecutive activations found -> remove the warning
+    setWarnings((prev) => {
+      const { activationConsec, ...rest } = prev;
+      return rest;
+    });
+  };
+
+  // keep activation warnings in sync when droppedLayers changes
+  useEffect(() => {
+    checkConsecutiveActivations(droppedLayers);
+  }, [droppedLayers]);
+
   useEffect(() => {
     localStorage.setItem("inputConfig", JSON.stringify(inputConfig));
   }, [inputConfig]);
@@ -493,6 +517,12 @@ function BuildModels() {
             <h2 className="canvas-title">Model Architecture</h2>
             <p className="canvas-subtitle">Drag layers to build your model</p>
           </div>
+
+          {warnings.activationConsec && (
+            <div className="activation-warning" role="status">
+              ⚠️ {warnings.activationConsec}
+            </div>
+          )}
 
           <div
             className={`architecture-area ${isDraggingOver ? "drag-over" : ""}`}
