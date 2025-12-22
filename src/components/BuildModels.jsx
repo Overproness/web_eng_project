@@ -1161,7 +1161,7 @@ function BuildModels() {
             </div>
           </div>
 
-          {/* Training Configuration */}
+          {/* Training  */}
           <div className="config-section">
             <h3 className="config-title">Training Configuration</h3>
 
