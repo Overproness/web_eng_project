@@ -17,8 +17,7 @@
   gap: 20px;
   max-width: 1600px;
   width: 100%;
-  align-items: stretch; /* keep sidebars the same height as middle column */
-  min-height: calc(100vh - 120px);
+  align-items: flex-start; /* sidebars size to their content height */
 }
 
 /* --- Left Column: Layer Palette --- */
@@ -30,9 +29,9 @@
   border-radius: 8px;
   display: flex;
   flex-direction: column;
-  align-self: stretch;
-  max-height: none; /* allow stretching with middle column */
-  overflow-y: auto; /* allow scrolling when content is long */
+  align-self: flex-start; /* size to content */
+  max-height: none;
+  overflow: visible;
 }
 
 .palette-title {
@@ -61,10 +60,10 @@
   border-color: #22c55e;
 }
 
-/* Make the layers list scroll within the left palette while keeping full height */
+/* Layers list: let it size to content (no forced stretching) */
 .left-palette .layers-list {
-  overflow-y: auto;
-  flex: 1 1 auto;
+  overflow-y: visible;
+  flex: initial;
 }
 
 /* Allow the right config panel content to scroll while keeping header/footer visible */
@@ -134,9 +133,9 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
-  align-self: stretch;
-  max-height: none; /* allow stretching with middle column */
-  overflow: hidden;
+  align-self: flex-start; /* size to content */
+  max-height: none;
+  overflow: visible;
 }
 
 .canvas-header {
@@ -468,6 +467,36 @@
 
 .config-field select[multiple] {
   min-height: 140px;
+}
+
+/* Color and selected styles for dropdowns and options */
+.config-field select {
+  background-color: rgba(6, 8, 6, 0.6); /* darker input background */
+  border: 1px solid rgba(34,197,94,0.25);
+  color: #e5e7eb;
+}
+
+.config-field select option {
+  background-color: #0d0d0d;
+  color: #e5e7eb;
+}
+
+/* Hover and checked styles inside dropdown lists (works in most browsers) */
+.config-field select option:hover {
+  background-color: rgba(34,197,94,0.08);
+  color: #ffffff;
+}
+
+.config-field select option:checked,
+.config-field select option[selected] {
+  background-color: #22c55e;
+  color: #050b08;
+}
+
+/* For multi-select highlight */
+.config-field select[multiple] option:checked {
+  background-color: #22c55e;
+  color: #050b08;
 }
 
 .config-field input:focus,
