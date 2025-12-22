@@ -165,7 +165,8 @@
 /* --- Architecture Area (Drop Zone) --- */
 .architecture-area {
   flex-grow: 1;
-  min-height: 400px;
+  min-height: 0; /* allow to shrink to match sibling columns */
+  height: 100%; /* fill parent column height */
   border: 2px dashed rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   display: flex;
@@ -173,11 +174,11 @@
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   background-color: rgba(0, 0, 0, 0.2);
   transition: all 0.2s;
-  padding: 30px;
-  overflow-y: auto;
+  padding: 20px;
+  overflow-y: auto; /* scroll inside architecture area only */
 }
 
 /* Visual feedback when dragging over */
@@ -193,7 +194,7 @@
 
 .drag-placeholder {
   color: #6b7280;
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 .placeholder-icon {
@@ -215,6 +216,8 @@
   gap: 25px;
   width: 100%;
   max-width: 500px;
+  flex: 1 1 auto; /* allow model stack to take remaining height */
+  overflow-y: auto; /* scroll inside model stack when needed */
 }
 
 .dropped-layer-card {
@@ -638,6 +641,37 @@
 
 .right-config-panel::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* Thin scrollbars for all three columns (modern browsers) */
+.left-palette::-webkit-scrollbar,
+.architecture-area::-webkit-scrollbar,
+.right-config-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.left-palette::-webkit-scrollbar-track,
+.architecture-area::-webkit-scrollbar-track,
+.right-config-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.left-palette::-webkit-scrollbar-thumb,
+.architecture-area::-webkit-scrollbar-thumb,
+.right-config-panel::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
+}
+.left-palette::-webkit-scrollbar-thumb:hover,
+.architecture-area::-webkit-scrollbar-thumb:hover,
+.right-config-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+/* Firefox thin scrollbars */
+.left-palette,
+.architecture-area,
+.right-config-panel {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.08) transparent;
 }
 
 /* --- Code Modal --- */
