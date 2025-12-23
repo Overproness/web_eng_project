@@ -297,19 +297,21 @@ function generateLayerCode(layer, isFirst, inputConfig) {
   const { type, params } = layer;
 
   switch (type) {
-    case 'Input':
+    case 'Input': {
       const inputShape = params.shape || inputConfig?.inputShape || '28, 28, 1';
       return `layers.Input(shape=(${inputShape}))`;
+    }
 
-    case 'Dense':
+    case 'Dense': {
       const units = params.units || 128;
       const activation = params.activation || 'relu';
       if (isFirst && inputConfig?.inputShape) {
         return `layers.Dense(${units}, activation='${activation}', input_shape=(${inputConfig.inputShape}))`;
       }
       return `layers.Dense(${units}, activation='${activation}')`;
+    }
 
-    case 'Conv2D':
+    case 'Conv2D': {
       const filters = params.filters || 32;
       const kernelSize = params.kernelSize || 3;
       const convActivation = params.activation || 'relu';
@@ -318,41 +320,47 @@ function generateLayerCode(layer, isFirst, inputConfig) {
         return `layers.Conv2D(${filters}, (${kernelSize}, ${kernelSize}), activation='${convActivation}', padding='${padding}', input_shape=(${inputConfig.inputShape}))`;
       }
       return `layers.Conv2D(${filters}, (${kernelSize}, ${kernelSize}), activation='${convActivation}', padding='${padding}')`;
+    }
 
-    case 'MaxPooling2D':
+    case 'MaxPooling2D': {
       const poolSize = params.poolSize || 2;
       const strides = params.strides || 2;
       return `layers.MaxPooling2D(pool_size=(${poolSize}, ${poolSize}), strides=${strides})`;
+    }
 
     case 'AvgPooling2D':
-    case 'AveragePooling2D':
+    case 'AveragePooling2D': {
       const avgPoolSize = params.poolSize || 2;
       const avgStrides = params.strides || 2;
       return `layers.AveragePooling2D(pool_size=(${avgPoolSize}, ${avgPoolSize}), strides=${avgStrides})`;
+    }
 
-    case 'SeparableConv2D':
+    case 'SeparableConv2D': {
       const sepFilters = params.filters || 64;
       const sepKernel = params.kernelSize || 3;
       const sepActivation = params.activation || 'relu';
       const sepPadding = params.padding || 'same';
       return `layers.SeparableConv2D(${sepFilters}, (${sepKernel}, ${sepKernel}), activation='${sepActivation}', padding='${sepPadding}')`;
+    }
 
     case 'Flatten':
       return `layers.Flatten()`;
 
-    case 'Dropout':
+    case 'Dropout': {
       const rate = params.rate || 0.5;
       return `layers.Dropout(${rate})`;
+    }
 
     case 'BatchNormalization':
       return `layers.BatchNormalization()`;
 
-    case 'ReLU':
+    case 'ReLU': {
       const maxValue = params.max_value;
       if (maxValue !== undefined && maxValue !== null) {
         return `layers.ReLU(max_value=${maxValue})`;
       }
       return `layers.ReLU()`;
+    }
 
     case 'Softmax':
       return `layers.Softmax()`;
@@ -363,9 +371,10 @@ function generateLayerCode(layer, isFirst, inputConfig) {
     case 'Tanh':
       return `layers.Activation('tanh')`;
 
-    case 'LeakyReLU':
+    case 'LeakyReLU': {
       const alpha = params.alpha || 0.3;
       return `layers.LeakyReLU(alpha=${alpha})`;
+    }
 
     case 'GlobalAveragePooling2D':
       return `layers.GlobalAveragePooling2D()`;

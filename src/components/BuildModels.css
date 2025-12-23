@@ -8,9 +8,62 @@
   height: 100vh;
   box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   font-family: "Inter", sans-serif;
   overflow: hidden;
+}
+
+/* Small Screen Warning */
+.small-screen-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  z-index: 10000;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.small-screen-warning .warning-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.small-screen-warning .warning-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.small-screen-warning .warning-text-container h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.small-screen-warning .warning-text-container p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #ffffff;
+  opacity: 0.95;
+  line-height: 1.4;
 }
 
 /* --- Layout Container --- */

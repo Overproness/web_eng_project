@@ -20,6 +20,8 @@ function BuildModels() {
   const [warnings, setWarnings] = useState({});
   // State for guide modal
   const [showGuide, setShowGuide] = useState(false);
+  // State for small screen warning
+  const [isSmallScreen, setIsSmallScreen] = useState(false);
   // State for input configuration
   const [inputConfig, setInputConfig] = useState(() => {
     const saved = localStorage.getItem("inputConfig");
@@ -99,6 +101,22 @@ function BuildModels() {
   useEffect(() => {
     localStorage.setItem("outputConfig", JSON.stringify(outputConfig));
   }, [outputConfig]);
+
+  // Check screen size and show warning for small screens
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsSmallScreen(window.innerWidth < 1024);
+    };
+
+    // Check on mount
+    checkScreenSize();
+
+    // Add event listener for window resize
+    window.addEventListener('resize', checkScreenSize);
+
+    // Cleanup
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const layerCategories = {
     Convolutional: [
@@ -285,7 +303,6 @@ function BuildModels() {
     setDroppedLayers(updatedLayers);
   };
 
-  // Validate and update input config
   const updateInputConfig = (key, value) => {
     const newConfig = { ...inputConfig, [key]: value };
     setInputConfig(newConfig);
@@ -473,6 +490,18 @@ function BuildModels() {
 
   return (
     <div className="model-builder-page">
+      {/* Small Screen Warning */}
+      {isSmallScreen && (
+        <div className="small-screen-warning">
+          <div className="warning-content">
+            <span className="warning-icon">⚠️</span>
+            <div className="warning-text-container">
+              <h3>Screen Size Notice</h3>
+              <p>For the best experience, please use this application on a computer or larger screen (minimum 1024px width). Some features may not work properly on smaller screens.</p>
+            </div>
+          </div>
+        </div>
+      )}
       <div className="builder-container">
         {/* --- Left Column: Layer Palette --- */}
         <div className="left-palette">
