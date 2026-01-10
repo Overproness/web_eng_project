@@ -1,90 +1,119 @@
 // src/App.jsx
 
-import { useState, useEffect } from 'react'
-import Login from './components/Login'
-import Signup from './components/Signup'
-import Navbar from './components/Navbar'
-import Home from './components/Home'
-import BuildModels from './components/BuildModels'
-import UserSettings from './components/UserSettings'
-import About from './components/About' // 1. Imported the new About page
-import './App.css'
-
+import { useEffect, useState } from "react";
+import "./App.css";
+import About from "./components/About";
+import BuildModels from "./components/BuildModels";
+import Home from "./components/Home";
+import Login from "./components/Login";
+import Navbar from "./components/Navbar";
+import Signup from "./components/Signup";
+import UserSettings from "./components/UserSettings";
 
 function App() {
-  const [showLogin, setShowLogin] = useState(true)
-  const [user, setUser] = useState(null)
-  const [activeTab, setActiveTab] = useState('home') // Initial active tab
+  const [showAuthModal, setShowAuthModal] = useState(false);
+  const [authMode, setAuthMode] = useState("login"); // 'login' or 'signup'
+  const [user, setUser] = useState(null);
+  const [activeTab, setActiveTab] = useState("home");
 
   useEffect(() => {
     // Check if user is already logged in from localStorage
-    const token = localStorage.getItem('token')
-    const savedUser = localStorage.getItem('user')
+    const token = localStorage.getItem("token");
+    const savedUser = localStorage.getItem("user");
     if (token && savedUser) {
-      setUser(JSON.parse(savedUser))
+      setUser(JSON.parse(savedUser));
     }
-  }, [])
+  }, []);
 
   const handleLoginSuccess = (userData) => {
-    setUser(userData)
-    setActiveTab('home')
-  }
+    setUser(userData);
+    setShowAuthModal(false);
+  };
 
   const handleSignupSuccess = (userData) => {
-    setUser(userData)
-    setActiveTab('home')
-  }
+    setUser(userData);
+    setShowAuthModal(false);
+  };
 
   const handleLogout = () => {
-    localStorage.removeItem('token')
-    localStorage.removeItem('user')
-    setUser(null)
-    setActiveTab('home')
-  }
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    setUser(null);
+    setActiveTab("home");
+  };
 
   const handleTabChange = (tab) => {
-    setActiveTab(tab)
-  }
+    // If trying to access settings without being logged in, show login modal
+    if (tab === "settings" && !user) {
+      setAuthMode("login");
+      setShowAuthModal(true);
+      return;
+    }
+    setActiveTab(tab);
+  };
 
-  // --- RENDERING LOGIC ---
+  const handleShowLogin = () => {
+    setAuthMode("login");
+    setShowAuthModal(true);
+  };
 
-  // Renders the main application if the user is logged in
-  if (user) {
-    return (
+  const handleShowSignup = () => {
+    setAuthMode("signup");
+    setShowAuthModal(true);
+  };
+
+  const handleCloseAuthModal = () => {
+    setShowAuthModal(false);
+  };
+
+  // Main application layout - accessible to everyone
+  return (
+    <>
       <div className="app-wrapper">
-        <Navbar 
-          activeTab={activeTab} 
-          onTabChange={handleTabChange} 
+        <Navbar
+          activeTab={activeTab}
+          onTabChange={handleTabChange}
           onLogout={handleLogout}
+          onShowLogin={handleShowLogin}
+          onShowSignup={handleShowSignup}
           user={user}
         />
         <main className="main-content">
-          {/* Renders the component based on the activeTab state */}
-          {activeTab === 'home' && <Home onTabChange={handleTabChange} />}
-          {activeTab === 'build' && <BuildModels />}
-          {activeTab === 'about' && <About onTabChange={handleTabChange} />} {/* 2. Added the About page rendering */}
-          {activeTab === 'settings' && <UserSettings user={user} />}
+          {activeTab === "home" && <Home onTabChange={handleTabChange} />}
+          {activeTab === "build" && (
+            <BuildModels user={user} onShowLogin={handleShowLogin} />
+          )}
+          {activeTab === "about" && <About onTabChange={handleTabChange} />}
+          {activeTab === "settings" && user && <UserSettings user={user} />}
         </main>
       </div>
-    )
-  }
 
-  // Renders the Login or Signup forms if the user is NOT logged in
-  return (
-    <>
-      {showLogin ? (
-        <Login
-          onSwitchToSignup={() => setShowLogin(false)}
-          onLoginSuccess={handleLoginSuccess}
-        />
-      ) : (
-        <Signup
-          onSwitchToLogin={() => setShowLogin(true)}
-          onSignupSuccess={handleSignupSuccess}
-        />
+      {/* Auth Modal Overlay */}
+      {showAuthModal && (
+        <div className="auth-modal-overlay" onClick={handleCloseAuthModal}>
+          <div
+            className="auth-modal-container"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <button className="auth-modal-close" onClick={handleCloseAuthModal}>
+              ×
+            </button>
+            {authMode === "login" ? (
+              <Login
+                onSwitchToSignup={() => setAuthMode("signup")}
+                onLoginSuccess={handleLoginSuccess}
+              />
+            ) : (
+              <Signup
+                onSwitchToLogin={() => setAuthMode("login")}
+                onSignupSuccess={handleSignupSuccess}
+              />
+            )}
+          </div>
+        </div>
       )}
     </>
-  )
+  );
 }
 
-export default App
+export default App;

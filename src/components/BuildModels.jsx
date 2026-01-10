@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { backend_url } from "../utils/config";
 import "./BuildModels.css";
 
-function BuildModels() {
+function BuildModels({ user, onShowLogin }) {
   const [searchTerm, setSearchTerm] = useState("");
   // State to store the layers dropped onto the canvas
   const [droppedLayers, setDroppedLayers] = useState(() => {
@@ -182,6 +182,15 @@ function BuildModels() {
 
   // Generate Python code
   const handleExportCode = async () => {
+    // Check if user is authenticated
+    if (!user) {
+      alert("Please login to export code");
+      if (onShowLogin) {
+        onShowLogin();
+      }
+      return;
+    }
+
     if (droppedLayers.length === 0) {
       alert("Please add at least one layer to your model!");
       return;
