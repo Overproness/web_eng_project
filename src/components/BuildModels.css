@@ -5,10 +5,65 @@
   padding: 40px;
   background-color: #050a08; /* Darker green background */
   color: #ffffff;
-  min-height: calc(100vh - 60px);
+  height: 100vh;
+  box-sizing: border-box;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   font-family: "Inter", sans-serif;
+  overflow: hidden;
+}
+
+/* Small Screen Warning */
+.small-screen-warning {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  z-index: 10000;
+  padding: 15px 20px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.small-screen-warning .warning-content {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.small-screen-warning .warning-icon {
+  font-size: 2rem;
+  flex-shrink: 0;
+}
+
+.small-screen-warning .warning-text-container h3 {
+  margin: 0 0 5px 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.small-screen-warning .warning-text-container p {
+  margin: 0;
+  font-size: 0.9rem;
+  color: #ffffff;
+  opacity: 0.95;
+  line-height: 1.4;
 }
 
 /* --- Layout Container --- */
@@ -17,6 +72,8 @@
   gap: 20px;
   max-width: 1600px;
   width: 100%;
+  align-items: stretch; /* keep sidebars the same height as middle column */
+  height: calc(100vh - 80px);
 }
 
 /* --- Left Column: Layer Palette --- */
@@ -26,9 +83,12 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   padding: 20px;
   border-radius: 8px;
-  height: fit-content;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch; /* match middle column height */
   max-height: calc(100vh - 140px);
   overflow-y: auto;
+  height: 100%;
 }
 
 .palette-title {
@@ -55,6 +115,22 @@
 
 .search-box input:focus {
   border-color: #22c55e;
+}
+
+/* Layers list: let it size to content (no forced stretching) */
+.left-palette .layers-list {
+  overflow-y: auto;
+  flex: 1 1 auto;
+}
+
+/* Allow the right config panel content to scroll while keeping header/footer visible */
+.right-config-panel .config-section,
+.right-config-panel > .config-section:last-child {
+  overflow: visible;
+}
+.right-config-panel .config-scrollable {
+  overflow-y: auto;
+  flex: 1 1 auto;
 }
 
 .category-title {
@@ -103,6 +179,8 @@
   display: flex;
   flex-direction: column;
   min-width: 0;
+  min-height: 0; /* allow internal children to scroll properly inside flex */
+  height: 100%;
 }
 
 /* --- Right Config Panel --- */
@@ -112,8 +190,12 @@
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 8px;
   padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-self: stretch; /* match middle column height */
   max-height: calc(100vh - 140px);
   overflow-y: auto;
+  height: 100%;
 }
 
 .canvas-header {
@@ -136,7 +218,8 @@
 /* --- Architecture Area (Drop Zone) --- */
 .architecture-area {
   flex-grow: 1;
-  min-height: 400px;
+  min-height: 0; /* allow to shrink to match sibling columns */
+  height: 100%; /* fill parent column height */
   border: 2px dashed rgba(255, 255, 255, 0.1);
   border-radius: 8px;
   display: flex;
@@ -144,11 +227,11 @@
   justify-content: flex-start;
   align-items: center;
   text-align: center;
-  margin-bottom: 20px;
+  margin-bottom: 0;
   background-color: rgba(0, 0, 0, 0.2);
   transition: all 0.2s;
-  padding: 30px;
-  overflow-y: auto;
+  padding: 20px;
+  overflow-y: auto; /* scroll inside architecture area only */
 }
 
 /* Visual feedback when dragging over */
@@ -164,7 +247,7 @@
 
 .drag-placeholder {
   color: #6b7280;
-  margin-top: 100px;
+  margin-top: 20px;
 }
 
 .placeholder-icon {
@@ -186,6 +269,8 @@
   gap: 25px;
   width: 100%;
   max-width: 500px;
+  flex: 1 1 auto; /* allow model stack to take remaining height */
+  overflow-y: auto; /* scroll inside model stack when needed */
 }
 
 .dropped-layer-card {
@@ -425,6 +510,71 @@
   transition: all 0.2s;
 }
 
+/* Enhanced select styling (custom arrow, better padding) */
+.config-field select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  background-image: linear-gradient(45deg, transparent 50%, #fff 50%),
+    linear-gradient(135deg, #fff 50%, transparent 50%),
+    linear-gradient(to right, rgba(255,255,255,0.03), rgba(255,255,255,0.03));
+  background-position: calc(100% - 18px) calc(1em + 2px), calc(100% - 13px) calc(1em + 2px), 0 0;
+  background-size: 6px 6px, 6px 6px, 100% 100%;
+  background-repeat: no-repeat;
+  padding-right: 40px;
+}
+
+.config-field select:focus {
+  box-shadow: 0 0 0 3px rgba(34,197,94,0.08);
+}
+
+.config-field select[multiple] {
+  min-height: 140px;
+}
+
+/* Color and selected styles for dropdowns and options */
+.config-field select {
+  background-color: rgba(6, 8, 6, 0.6); /* darker input background */
+  border: 1px solid rgba(34,197,94,0.25);
+  color: #e5e7eb;
+}
+
+.config-field select option {
+  background-color: #0d0d0d;
+  color: #e5e7eb;
+}
+
+/* Hover and checked styles inside dropdown lists (works in most browsers) */
+.config-field select option:hover {
+  background-color: rgba(34,197,94,0.08);
+  color: #ffffff;
+}
+
+.config-field select option:checked,
+.config-field select option[selected] {
+  background-color: #22c55e;
+  color: #050b08;
+}
+
+/* For multi-select highlight */
+.config-field select[multiple] option:checked {
+  background-color: #22c55e;
+  color: #050b08;
+}
+
+/* Activation consecutive warning banner */
+.activation-warning {
+  width: 100%;
+  max-width: 100%;
+  background: linear-gradient(90deg, rgba(255,183,77,0.08), rgba(255,111,0,0.06));
+  border: 1px solid rgba(245,158,11,0.2);
+  color: #ffdba3;
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin: 0 0 12px 0;
+  font-weight: 600;
+}
+
 .config-field input:focus,
 .config-field select:focus {
   border-color: #22c55e;
@@ -446,17 +596,71 @@
   margin-top: 4px;
 }
 
+/* Warning styles */
+.input-warning {
+  border-color: #f59e0b !important;
+  background-color: rgba(245, 158, 11, 0.1) !important;
+}
+
+.warning-text {
+  display: block;
+  color: #f59e0b;
+  font-size: 0.75rem;
+  margin-top: 4px;
+  font-weight: 500;
+  animation: fadeIn 0.3s;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
 .checkbox-field label {
   display: flex;
   align-items: center;
   cursor: pointer;
 }
 
+/* Info icon styles */
+.info-icon {
+  display: inline-block;
+  margin-left: 6px;
+  color: #10b981;
+  font-size: 0.9rem;
+  cursor: help;
+  font-weight: bold;
+  transition: all 0.2s;
+}
+
+.info-icon:hover {
+  color: #22c55e;
+  transform: scale(1.1);
+}
+
 .checkbox-field input[type="checkbox"] {
   margin-right: 8px;
   cursor: pointer;
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
+  accent-color: #22c55e; /* modern browsers will tint the checkbox */
+  transform: scale(1.08);
+  border-radius: 4px;
+}
+
+/* Improve hover and focus for checkboxes */
+.checkbox-field input[type="checkbox"]:hover {
+  filter: brightness(1.05);
+}
+.checkbox-field input[type="checkbox"]:focus {
+  outline: 2px solid rgba(34,197,94,0.18);
+  outline-offset: 2px;
 }
 
 .layer-params-section {
@@ -490,6 +694,37 @@
 
 .right-config-panel::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.2);
+}
+
+/* Thin scrollbars for all three columns (modern browsers) */
+.left-palette::-webkit-scrollbar,
+.architecture-area::-webkit-scrollbar,
+.right-config-panel::-webkit-scrollbar {
+  width: 6px;
+}
+.left-palette::-webkit-scrollbar-track,
+.architecture-area::-webkit-scrollbar-track,
+.right-config-panel::-webkit-scrollbar-track {
+  background: transparent;
+}
+.left-palette::-webkit-scrollbar-thumb,
+.architecture-area::-webkit-scrollbar-thumb,
+.right-config-panel::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.08);
+  border-radius: 6px;
+}
+.left-palette::-webkit-scrollbar-thumb:hover,
+.architecture-area::-webkit-scrollbar-thumb:hover,
+.right-config-panel::-webkit-scrollbar-thumb:hover {
+  background: rgba(255,255,255,0.14);
+}
+
+/* Firefox thin scrollbars */
+.left-palette,
+.architecture-area,
+.right-config-panel {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.08) transparent;
 }
 
 /* --- Code Modal --- */
@@ -1017,6 +1252,307 @@
   .export-btn {
     font-size: 0.85rem;
   }
+}
+
+/* --- Guide Modal Styles --- */
+.guide-btn {
+  padding: 10px 20px;
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+  margin-right: 10px;
+}
+
+.guide-btn:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.3);
+}
+
+.guide-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.85);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 10000;
+  animation: fadeIn 0.3s;
+}
+
+.guide-modal {
+  background: linear-gradient(135deg, #0a1612 0%, #050a08 100%);
+  border: 1px solid rgba(34, 197, 94, 0.3);
+  border-radius: 12px;
+  width: 90%;
+  max-width: 900px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  animation: slideUp 0.3s;
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.guide-modal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 25px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.guide-modal-header h2 {
+  margin: 0;
+  color: #22c55e;
+  font-size: 1.5rem;
+  font-weight: 700;
+}
+
+.guide-modal-body {
+  padding: 25px;
+  overflow-y: auto;
+  flex: 1;
+  color: #ffffff;
+}
+
+.guide-modal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.guide-modal-body::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.guide-modal-body::-webkit-scrollbar-thumb {
+  background: #22c55e;
+  border-radius: 4px;
+}
+
+.guide-section {
+  margin-bottom: 30px;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+}
+
+.guide-section h3 {
+  color: #22c55e;
+  font-size: 1.3rem;
+  margin-top: 0;
+  margin-bottom: 10px;
+  border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+  padding-bottom: 10px;
+}
+
+.guide-description {
+  color: #9ca3af;
+  font-size: 0.95rem;
+  margin-bottom: 20px;
+  font-style: italic;
+}
+
+.guide-config,
+.guide-layers,
+.guide-training {
+  margin-bottom: 20px;
+}
+
+.guide-config h4,
+.guide-layers h4,
+.guide-training h4 {
+  color: #10b981;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  margin-top: 0;
+}
+
+.guide-section ul,
+.guide-section ol {
+  margin: 0;
+  padding-left: 25px;
+  line-height: 1.8;
+}
+
+.guide-section li {
+  color: #d1d5db;
+  margin-bottom: 8px;
+}
+
+.guide-section strong {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.guide-section code {
+  background: rgba(34, 197, 94, 0.15);
+  color: #22c55e;
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9em;
+}
+
+.guide-tips {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.08) 0%, rgba(16, 185, 129, 0.05) 100%);
+  border-color: rgba(34, 197, 94, 0.2);
+}
+
+.tips-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 15px;
+  margin-top: 15px;
+}
+
+.tip-card {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 15px;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.tip-card strong {
+  display: block;
+  color: #22c55e;
+  margin-bottom: 10px;
+  font-size: 0.95rem;
+}
+
+.tip-card ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.tip-card li {
+  font-size: 0.85rem;
+  margin-bottom: 5px;
+}
+
+.reference-table {
+  overflow-x: auto;
+  margin-top: 15px;
+}
+
+.reference-table table {
+  width: 100%;
+  border-collapse: collapse;
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.reference-table th {
+  background: rgba(34, 197, 94, 0.2);
+  color: #22c55e;
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  border-bottom: 2px solid rgba(34, 197, 94, 0.3);
+}
+
+.reference-table td {
+  padding: 12px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  color: #d1d5db;
+}
+
+.reference-table tr:last-child td {
+  border-bottom: none;
+}
+
+.reference-table tr:hover {
+  background: rgba(34, 197, 94, 0.05);
+}
+
+.explanation-item {
+  margin-bottom: 25px;
+  padding: 15px;
+  background: rgba(0, 0, 0, 0.2);
+  border-left: 3px solid #22c55e;
+  border-radius: 6px;
+}
+
+.explanation-item h4 {
+  color: #22c55e;
+  font-size: 1.05rem;
+  margin: 0 0 8px 0;
+  font-weight: 600;
+}
+
+.explanation-item p {
+  color: #d1d5db;
+  margin: 0 0 10px 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+
+.explanation-item ul {
+  margin: 0;
+  padding-left: 25px;
+}
+
+.explanation-item li {
+  color: #9ca3af;
+  font-size: 0.9rem;
+  margin-bottom: 6px;
+  line-height: 1.5;
+}
+
+.explanation-item code {
+  background: rgba(34, 197, 94, 0.15);
+  color: #10b981;
+  padding: 2px 5px;
+  border-radius: 3px;
+  font-size: 0.85em;
+  font-family: 'Consolas', 'Monaco', monospace;
+}
+
+.guide-modal-footer {
+  padding: 20px 25px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  display: flex;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.close-guide-btn {
+  padding: 12px 30px;
+  background: linear-gradient(135deg, #22c55e 0%, #10b981 100%);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.close-guide-btn:hover {
+  background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(34, 197, 94, 0.4);
 }
 
 /* Landscape orientation optimization for tablets */
