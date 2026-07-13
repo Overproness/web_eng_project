@@ -35,7 +35,7 @@ mongoose
   .catch((error) => console.error("MongoDB connection error:", error));
 
 // Only listen on a port for local dev / traditional hosts (e.g. Render).
-// On Vercel this file is required by api/server.cjs and invoked per-request instead.
+// On Vercel this file is the service entrypoint; the exported app is invoked per-request instead.
 if (require.main === module) {
   const PORT = process.env.PORT || 4000;
   app.listen(PORT, () => {
