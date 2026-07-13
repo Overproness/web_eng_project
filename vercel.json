@@ -1,0 +1,10 @@
+{
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "installCommand": "npm install && npm install --prefix backend",
+  "rewrites": [
+    { "source": "/users/:path*", "destination": "/api/server" },
+    { "source": "/auth/:path*", "destination": "/api/server" },
+    { "source": "/codegen/:path*", "destination": "/api/server" }
+  ]
+}

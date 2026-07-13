@@ -2,8 +2,10 @@ require("dotenv").config();
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
-const app = express();
 const morgan = require("morgan");
+const logger = require("./utils/logger");
+
+const app = express();
 
 app.use(cors());
 app.use(express.json());
@@ -23,22 +25,22 @@ const authRouter = require("./routes/auth");
 app.use("/auth", authRouter);
 
 const codegenRouter = require("./routes/codegen");
-const { default: logger } = require("./utils/logger");
 app.use("/codegen", codegenRouter);
 
-const PORT = process.env.PORT || 4000;
 const MONGODB_URI = process.env.MONGODB_URI;
 
-async function start() {
-  try {
-    await mongoose.connect(MONGODB_URI);
-    console.log("Connected to MongoDB");
+mongoose
+  .connect(MONGODB_URI)
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((error) => console.error("MongoDB connection error:", error));
 
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
-    });
-  } catch (error) {
-    console.error("Error starting the server:", error);
-  }
+// Only listen on a port for local dev / traditional hosts (e.g. Render).
+// On Vercel this file is required by api/server.cjs and invoked per-request instead.
+if (require.main === module) {
+  const PORT = process.env.PORT || 4000;
+  app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+  });
 }
-start();
+
+module.exports = app;
